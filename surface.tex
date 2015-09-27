@@ -1,0 +1,138 @@
+%\documentclass[12pt,notitlepage,aps,pra,longbibliography,nofootinbib,tightenlines]{revtex4}
+%\documentclass[12pt,notitlepage,longbibliography,nofootinbib,tightenlines]{revtex4-1}
+%\documentclass[12pt,notitlepage,longbibliography,nofootinbib,tightenlines]{revtex4-1}
+
+%\documentclass[12pt,a4]{revtex4}
+\documentclass[12pt]{article}
+%\documentclass[11pt, twocolumn]{article}
+
+%\usepackage{epsf}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{natbib}
+%\usepackage{cite}
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+%\RequirePackage{algorithmic}
+%\RequirePackage{algorithm}
+%\RequirePackage{theorem}
+%\RequirePackage{eucal}
+\RequirePackage{color}
+\RequirePackage{url}
+\RequirePackage{mdwlist}
+
+\RequirePackage[all]{xy}
+\CompileMatrices
+\RequirePackage{hyperref}
+\RequirePackage{graphicx}
+%\RequirePackage[dvips]{geometry}
+
+
+\begin{document}
+
+\title{The Surface Betrays What Lies Beneath}
+
+\author{Simon Burton}
+%\affiliation{Centre for Engineered Quantum Systems, School of Physics, The University of Sydney}
+
+\date{\today}
+
+%\begin{abstract}
+%We make a compendium of many uses of a simple idea.
+%Perhaps it is the only really great calculation.
+%\end{abstract}
+
+\maketitle
+
+
+\def\Complex{\mathbb{C}}
+\def\Z{\mathbb{Z}}
+\def\Ham{\mathcal{H}}
+\def\Pauli{\mathcal{P}}
+\def\Spec{\mbox{Spec}}
+\def\Proveit{{\it (Proof??)}}
+\def\GL{\mathrm{GL}}
+\def\half{\frac{1}{2}}
+\def\Stab{S}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+%\section{Introduction}
+
+The so-called ``Generalized Distributive Law''
+\cite{Aji2000}
+explores the ramifications of the innocent looking
+formula $ab+ac = a(b+c).$
+These include such gems as the fast Fourier transform
+and belief propagation.
+
+We can also think of multiplication by $a$ as a function $f$
+and rewrite the above equation as $f(b)+f(c)=f(b+c).$
+This is the equation for a homomorphism or representation.
+It says we can represent addition (on the right-hand side)
+as some other kind of addition (on the left-hand side.)
+%The simple distributive law states that we can zoom in or out
+
+The discrete Fourier transform of a sequence $\{x_j\}_0^{N-1}$
+is given by
+$$
+    y_k = \sum_{j=0}^{N-1} x_j e^{2\pi i k \frac{j}{N}}, \ \ k=0,...,N-1.
+$$
+If $N$ is a composite number $N=N_1 N_2$ then we can re-express this sum as
+\begin{align*}
+    y_k &= \sum_{j_1=0}^{N_1-1} \sum_{j_2=0}^{N_2-1} x_{j_1 N_2 + j_2}
+            e^{2\pi i k \frac{j_1 N_2 + j_2}{N}}, \ \ k=0,...,N-1. \\
+        &= \sum_{j_1=0}^{N_1-1}
+            e^{2\pi i k \frac{j_1 N_2}{N}}
+            \sum_{j_2=0}^{N_2-1} x_{j_1 N_2 + j_2}
+            e^{2\pi i k \frac{j_2}{N}}, \ \ k=0,...,N-1.
+\end{align*}
+
+
+\section{Dynamic programming}
+
+Dijkstra's algorithm
+
+\section{Huygen's principle}
+
+Path integrals, calculus of variations
+
+Integration by parts involves a crucial use of the distributive law.
+
+Stoke's theorem ? % Chern-Simons ?
+
+\section{Fast marching}
+
+Eikonal equation
+
+\section{Automatic differentiation}
+
+forward and reverse
+
+\section{Logic: cut-elimination}
+
+Natural deduction, Gentzen's sequent calculus..
+
+\section{Combinatorics...}
+
+path counting, transfer matrix...
+generating functions?
+
+\section{Homology/Co-Homology}
+
+Forward and reverse
+
+
+\bibliography{refs}{}
+\bibliographystyle{abbrv}
+
+
+\end{document}
+
+
