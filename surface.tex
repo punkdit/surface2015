@@ -30,6 +30,12 @@
 %\RequirePackage[dvips]{geometry}
 
 
+\makeatletter
+\newcommand{\pushright}[1]{\ifmeasuring@#1\else\omit\hfill$\displaystyle#1$\fi\ignorespaces}
+\newcommand{\pushleft}[1]{\ifmeasuring@#1\else\omit$\displaystyle#1$\hfill\fi\ignorespaces}
+\makeatother
+
+
 \begin{document}
 
 \title{The Surface Betrays What Lies Beneath}
@@ -57,6 +63,8 @@
 \def\half{\frac{1}{2}}
 \def\Stab{S}
 
+%\def\morph
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -71,28 +79,45 @@ explores the ramifications of the innocent looking
 formula $ab+ac = a(b+c).$
 These include such gems as the fast Fourier transform
 and belief propagation.
-
 We can also think of multiplication by $a$ as a function $f$
-and rewrite the above equation as $f(b)+f(c)=f(b+c).$
-This is the equation for a homomorphism or representation.
+and rewrite this equation as 
+$$
+    f(b)\hat{+}f(c)=f(b+c) \ \ \ \ \ \ \ \ \ \ \ \mbox{(M)}
+$$
+This is the equation for a homomorphism, or representation.
 It says we can represent addition (on the right-hand side)
-as some other kind of addition (on the left-hand side.)
+as some other kind of addition, $\hat{+}.$
 %The simple distributive law states that we can zoom in or out
+
+\section{Fast Fourier transform}
+
+% Apparently invented by Gauss:
+% http://www.cis.rit.edu/class/simg716/Gauss_History_FFT.pdf
+
 
 The discrete Fourier transform of a sequence $\{x_j\}_0^{N-1}$
 is given by
 $$
-    y_k = \sum_{j=0}^{N-1} x_j e^{2\pi i k \frac{j}{N}}, \ \ k=0,...,N-1.
+%    y_k = \sum_{j=0}^{N-1} x_j e^{2\pi i k \frac{j}{N}}, \ \ k=0,...,N-1.
+    y_k = \sum_{j=0}^{N-1} x_j \omega^{kj}, \ \ k=0,...,N-1.
 $$
+where $\omega=e^{2\pi i/N}.$
 If $N$ is a composite number $N=N_1 N_2$ then we can re-express this sum as
 \begin{align*}
     y_k &= \sum_{j_1=0}^{N_1-1} \sum_{j_2=0}^{N_2-1} x_{j_1 N_2 + j_2}
-            e^{2\pi i k \frac{j_1 N_2 + j_2}{N}}, \ \ k=0,...,N-1. \\
+            \omega^{k (j_1 N_2 + j_2)}, \ \ k=0,...,N-1. \\
         &= \sum_{j_1=0}^{N_1-1}
-            e^{2\pi i k \frac{j_1 N_2}{N}}
+            \omega^{k {j_1 N_2}}
             \sum_{j_2=0}^{N_2-1} x_{j_1 N_2 + j_2}
-            e^{2\pi i k \frac{j_2}{N}}, \ \ k=0,...,N-1.
+            \omega^{k {j_2}}, \ \ k=0,...,N-1.
 \end{align*}
+Note there are two applications of (M) here. ((three??))
+The first turns a sum into a product: $\omega^{a+b}=\omega^a \omega^b.$
+Then we can apply vanilla distributive law to refactor the summation.
+If we pre-compute the exponentials, this leads to a reduction in
+the number of operations required, hence the adjective ``fast''.
+
+Displaying this graphically.
 
 
 \section{Dynamic programming}
@@ -123,6 +148,10 @@ Natural deduction, Gentzen's sequent calculus..
 
 path counting, transfer matrix...
 generating functions?
+
+\section{Renormalization}
+
+works in 1d...
 
 \section{Homology/Co-Homology}
 
