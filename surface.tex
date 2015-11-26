@@ -38,7 +38,7 @@
 
 \begin{document}
 
-\title{The Surface Betrays What Lies Beneath}
+\title{The surface betrays what lies beneath}
 
 \author{Simon Burton}
 %\affiliation{Centre for Engineered Quantum Systems, School of Physics, The University of Sydney}
@@ -119,10 +119,99 @@ the number of operations required, hence the adjective ``fast''.
 
 Displaying this graphically.
 
+\section{Belief propagation}
+
+Economics
+
+Bethe Anatz (solves Heisenberg in 1D), cavity method.
+Is there a forward \& reverse?
+
+\section{Dijkstra's algorithm}
+
+%\def\P{\mathcal P}
+\def\Z{\mathbb Z}
+
+Let $G$ be a finite graph: $G = (V, E).$
+%Choose a POSET $\P$ with unique 
+For $x,y\in V$ Write $x\sim y$ when there
+is an edge between $x$ and $y.$ % or when $x=y.$
+%Let $\P=\mathbb Z \cup \{\infty\}$ be the ordered set of integers with a top element.
+Define the set of \emph{states} as %``height'' functions
+$A = \{ f | f : V \to \Z \}.$
+This is a partially ordered set, using
+the pointwise order:
+$f\le g$ iff $f(x)\le g(x)\ \forall x\in V.$
+
+Define the \emph{message passing} function
+$T:A\to A$ by
+$$(Tf)(x) = \min\{f(x), \min_{y\sim x} f(y)+1\}.$$
+
+{\bf Lemma:} there exists $n$ such that $T^{n+1} = T^n.$
+
+{\bf Proof:}
+$T$ is monotonic non-increasing on $ A.$
+For any $f\in A$ we have $g\le f$
+where $g$ is a constant function defined by $g(x)=\min_y f(y).$
+Therefore the set $\{f, Tf, T^2f,...\}$ is finite.
+\emph{XXX need to use $G$ finite}
+\qed
+
+%Let $n$ be the minimum $n$ such that $T^{n+1}=T^n.$ 
+
+\def\Fix{\mathrm{Fix}}
+
+Any $f\in  A$ such that $Tf=f$ is called \emph{stationary.}
+The set of such states we denote $\Fix(T).$
+%Any constant function  is stationary.
+%The functions furthest away from being stationary
+%are the $f$ that have $T^nf\ne T^{n-1}f.$
+%We call these the \emph{points} of $T.$
+%We would like to identify these functions with
+%the vertices of the graph, but there are too many such $f$.
+A state $f$ is stationary iff
+$f(x)\le f(y)+1,\ \forall x\sim y.$
+Direct computation shows that
+%set of stationary states is convex:
+$\Fix(T)$ is convex:
+given $f$ and $g$ both stationary,
+and $\alpha\in[0, 1]$ then $\alpha f + (1-\alpha) g$
+is stationary.
+
+We define an equivalence relation on 
+states $f$ and $g$ by 
+declaring $f\sim g$ when $f-g$ is a constant state. 
+This quotient map is a projection $P,$
+and $P(\Fix(T))$ is now a compact convex subset of
+a finite dimensional real vector space.
+Furthermore, this set is the intersection
+of a finite set of closed half-spaces and
+so has finitely many extreme points.
+For each edge $x\sim y$ of the graph
+we get a closed half space
+$f(x)\le f(y)+1.$
+This half space survives the action of $P$
+because we can rewrite it as $f(x)-f(y)\le 1.$
+
+The extreme points of $P(\Fix(T))$ are bijectively
+identified with the vertices of $G.$
+The identification works as follows.
+Let $f$ be such an extreme point.
+$f$ will saturate a set of inequalities,
+ie. $\{f(x)-f(y)=1\}$
+This set must touch every vertex of $G.$
+There are no loops in this set, and so we
+have a spanning tree.... the minimum of $f$
+is the vertex of $G$ that we seek...
+
 
 \section{Dynamic programming}
 
-Dijkstra's algorithm
+Linear programming, simplex method (duality)
+
+Approxiamte Dynamic programming (Reinforcement learning)
+% https://webdocs.cs.ualberta.ca/~bowling/papers/07adprl-dualrl.pdf
+
+Bellman's equation a.k.a. Hamilton-Jacobi equations
 
 \section{Huygen's principle}
 
@@ -130,7 +219,9 @@ Path integrals, calculus of variations
 
 Integration by parts involves a crucial use of the distributive law.
 
-Stoke's theorem ? % Chern-Simons ?
+Stoke's theorem ? % Chern-Simons ? AdS-CFT correspondence ?
+
+Green's function...
 
 \section{Fast marching}
 
@@ -147,16 +238,21 @@ Natural deduction, Gentzen's sequent calculus..
 \section{Combinatorics...}
 
 path counting, transfer matrix...
-generating functions?
+generating functions? 
+creation/annihilation operators?
+denotational semantics?
 
-\section{Renormalization}
+\section{Renormalization?}
 
-works in 1d...
+works in 1d... dual is zoom-in ?
 
-\section{Homology/Co-Homology}
+\section{Homology/Co-Homology?}
 
 Forward and reverse
 
+\section{Type inference?}
+
+ Haskell can infer the result type of a function from its argument (forward), or the argument type from the result (backward)
 
 \bibliography{refs}{}
 \bibliographystyle{abbrv}
