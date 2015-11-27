@@ -6,6 +6,22 @@
 \documentclass[12pt]{article}
 %\documentclass[11pt, twocolumn]{article}
 
+
+% xelatex:
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\usepackage[small,sf,bf]{titlesec}
+
+%\setromanfont{DejaVu Serif}
+%\setromanfont{Droid Serif}
+
+%\setromanfont{Gentium} % nice! a bit fluffy
+\setromanfont{Gentium Book Basic} % more bold
+
+%\setromanfont{Noto Serif} % a bit thick
+%\setromanfont{Utopia}
+
+
 %\usepackage{epsf}
 \usepackage{amsmath}
 \usepackage{color}
@@ -53,17 +69,12 @@
 \maketitle
 
 
+\def\Z{\mathbb Z}
+\def\R{\mathbb R}
 \def\Complex{\mathbb{C}}
-\def\Z{\mathbb{Z}}
-\def\Ham{\mathcal{H}}
-\def\Pauli{\mathcal{P}}
-\def\Spec{\mbox{Spec}}
-\def\Proveit{{\it (Proof??)}}
 \def\GL{\mathrm{GL}}
 \def\half{\frac{1}{2}}
-\def\Stab{S}
-
-%\def\morph
+\def\todo#1{\emph{(XXX #1 XXX)}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,6 +99,11 @@ This is the equation for a homomorphism, or representation.
 It says we can represent addition (on the right-hand side)
 as some other kind of addition, $\hat{+}.$
 %The simple distributive law states that we can zoom in or out
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 
 \section{Fast Fourier transform}
 
@@ -119,6 +135,11 @@ the number of operations required, hence the adjective ``fast''.
 
 Displaying this graphically.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
 \section{Belief propagation}
 
 Economics
@@ -126,10 +147,12 @@ Economics
 Bethe Anatz (solves Heisenberg in 1D), cavity method.
 Is there a forward \& reverse?
 
-\section{Dijkstra's algorithm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 
-%\def\P{\mathcal P}
-\def\Z{\mathbb Z}
+\section{Dijkstra's algorithm}
 
 Let $G$ be a finite graph: $G = (V, E).$
 %Choose a POSET $\P$ with unique 
@@ -137,52 +160,77 @@ For $x,y\in V$ Write $x\sim y$ when there
 is an edge between $x$ and $y.$ % or when $x=y.$
 %Let $\P=\mathbb Z \cup \{\infty\}$ be the ordered set of integers with a top element.
 Define the set of \emph{states} as %``height'' functions
-$A = \{ f | f : V \to \Z \}.$
-This is a partially ordered set, using
-the pointwise order:
-$f\le g$ iff $f(x)\le g(x)\ \forall x\in V.$
+the finite dimensional vector space
+$A = \{ f | f : V \to \R \}.$
 
-Define the \emph{message passing} function
-$T:A\to A$ by
+The \emph{message passing} function
+$T:A\to A$ is defined by
 $$(Tf)(x) = \min\{f(x), \min_{y\sim x} f(y)+1\}.$$
 
-{\bf Lemma:} there exists $n$ such that $T^{n+1} = T^n.$
+{\bf Lemma.} There exists $n$ such that $T^{n+1} = T^n.$
 
-{\bf Proof:}
-$T$ is monotonic non-increasing on $ A.$
-For any $f\in A$ we have $g\le f$
-where $g$ is a constant function defined by $g(x)=\min_y f(y).$
-Therefore the set $\{f, Tf, T^2f,...\}$ is finite.
-\emph{XXX need to use $G$ finite}
+{\bf Proof.}
+%$A$ is a partially ordered set, using
+%the pointwise order:
+%$f\le g$ iff $f(x)\le g(x)\ \forall x\in V.$
+%$T$ is monotonic non-increasing on $A.$
+%For any $f\in A$ we have $g\le f$
+%where $g$ is a constant function defined by $g(x)=\min_y f(y).$
+%Therefore the set $\{f, Tf, T^2f,...\}$ is finite.
+%\todo{Insert elegant proof here. Need to use $G$ finite.}
+%The proof is by induction.
+This is Dijkstra's algorithm \cite{Dijkstra1959}.
+Without loss of generality we may take
+$G$ to be connected.
+Choose $f\in A.$
+Define $f_i = T^i f.$
+%We will show that $T^{n+1}f = T^n f$
+We will show that $f_{n+1} = f_n$
+where $n$ depends only on $G.$
+%we will partition the vertices $V$ into three sets:
+For each iteration, $i=1,...,n$
+we will maintain a subset $S_i\subset V$
+of ``accepted'' vertices:
+if $x\in S_i$ then $f_i(y)-f_i(x)\le 1$ for all $y\sim x.$
+Begin with $S_1=\arg\min(f).$
+Then at each step we expand $S_i$ using its
+neighbourhood: $S_{i+1}=S_i\cup \partial S_i.$
+If we choose $n=|V|$ then $S_n=V$ and we are done.
 \qed
 
 %Let $n$ be the minimum $n$ such that $T^{n+1}=T^n.$ 
 
 \def\Fix{\mathrm{Fix}}
 
-Any $f\in  A$ such that $Tf=f$ is called \emph{stationary.}
-The set of such states we denote $\Fix(T).$
+%Any $f\in  A$ such that $Tf=f$ is called \emph{stationary.}
+%The set of such states we denote $\Fix(T).$
+The set of fixed points of $T$ we denote as
+$\Fix(T):=\{f\in A|Tf=f\}.$
 %Any constant function  is stationary.
 %The functions furthest away from being stationary
 %are the $f$ that have $T^nf\ne T^{n-1}f.$
 %We call these the \emph{points} of $T.$
 %We would like to identify these functions with
 %the vertices of the graph, but there are too many such $f$.
-A state $f$ is stationary iff
+It can be seen that
+a state $f$ is fixed by $T$ iff
 $f(x)\le f(y)+1,\ \forall x\sim y.$
 Direct computation shows that
 %set of stationary states is convex:
 $\Fix(T)$ is convex:
-given $f$ and $g$ both stationary,
+given $f$ and $g$ both fixed by $T$,
 and $\alpha\in[0, 1]$ then $\alpha f + (1-\alpha) g$
-is stationary.
+is fixed by $T$.
 
-We define an equivalence relation on 
-states $f$ and $g$ by 
-declaring $f\sim g$ when $f-g$ is a constant state. 
-This quotient map is a projection $P,$
+We declare two states $f$ and $g$
+to be equivelant whenever $f-g$ is a constant function.
+%We define an equivalence relation on 
+%states $f$ and $g$ by 
+%declaring $f\sim g$ when $f-g$ is a constant state. 
+This equivalence relation defines a projection $P,$
 and $P(\Fix(T))$ is now a compact convex subset of
 a finite dimensional real vector space.
+\todo{looks like $A$ could be defined as affine ?}
 Furthermore, this set is the intersection
 of a finite set of closed half-spaces and
 so has finitely many extreme points.
@@ -192,17 +240,35 @@ $f(x)\le f(y)+1.$
 This half space survives the action of $P$
 because we can rewrite it as $f(x)-f(y)\le 1.$
 
-The extreme points of $P(\Fix(T))$ are bijectively
-identified with the vertices of $G.$
-The identification works as follows.
-Let $f$ be such an extreme point.
+For each extreme point $f$ of $P(\Fix(T))$ 
+we will associate a directed graph $D_f$
+as follows.
+$D_f$ has the same vertex set as $G$.
 $f$ will saturate a set of inequalities,
-ie. $\{f(x)-f(y)=1\}$
-This set must touch every vertex of $G.$
-There are no loops in this set, and so we
-have a spanning tree.... the minimum of $f$
-is the vertex of $G$ that we seek...
+$f(x)-f(y)=1$
+and this gives a directed edge $y\to x$ in $D_f.$
+%This set must touch every vertex of $G.$
+Every vertex participates in at least one
+directed edge.
+A \emph{path} in $D$ is a directed sequence of edges.
+There are no loops (closed paths) in $D$.
 
+{\bf Theorem.} Every $D$ path from $x$ to $y$ has
+minimal length among all paths in $G$ from $x$ to $y.$
+
+Conversely, to find a path of minimal length 
+from $x$ to $y$ we set $f$ to be the ``indicator''
+function for $x$ and then $T^nf$ will correspond
+to an extremal point of $P(Fix(T))$ whose directed
+graph contains all paths from $x$ to $y$ of minimal length in $G.$
+The \emph{indicator} function for \ $x\in V$ \ is \ $\delta_x:V\to \R$ 
+\ defined as\ $\delta_x(x)=0$\ and\ $\delta_x(y)=\mathrm{width}(G)$
+\ for\ $y\ne x.$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 
 \section{Dynamic programming}
 
@@ -212,6 +278,11 @@ Approxiamte Dynamic programming (Reinforcement learning)
 % https://webdocs.cs.ualberta.ca/~bowling/papers/07adprl-dualrl.pdf
 
 Bellman's equation a.k.a. Hamilton-Jacobi equations
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 
 \section{Huygen's principle}
 
@@ -223,17 +294,37 @@ Stoke's theorem ? % Chern-Simons ? AdS-CFT correspondence ?
 
 Green's function...
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
 \section{Fast marching}
 
 Eikonal equation
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 
 \section{Automatic differentiation}
 
 forward and reverse
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
 \section{Logic: cut-elimination}
 
 Natural deduction, Gentzen's sequent calculus..
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 
 \section{Combinatorics...}
 
@@ -241,6 +332,11 @@ path counting, transfer matrix...
 generating functions? 
 creation/annihilation operators?
 denotational semantics?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 
 \section{Renormalization?}
 
@@ -250,9 +346,10 @@ works in 1d... dual is zoom-in ?
 
 Forward and reverse
 
-\section{Type inference?}
+%\section{Type inference?}
+%
+% Haskell can infer the result type of a function from its argument (forward), or the argument type from the result (backward)
 
- Haskell can infer the result type of a function from its argument (forward), or the argument type from the result (backward)
 
 \bibliography{refs}{}
 \bibliographystyle{abbrv}
