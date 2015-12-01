@@ -54,7 +54,8 @@
 
 \begin{document}
 
-\title{The surface betrays what lies beneath}
+%\title{The surface betrays what lies beneath}
+\title{Show me the morphism}
 
 \author{Simon Burton}
 %\affiliation{Centre for Engineered Quantum Systems, School of Physics, The University of Sydney}
@@ -100,6 +101,9 @@ It says we can represent addition (on the right-hand side)
 as some other kind of addition, $\hat{+}.$
 %The simple distributive law states that we can zoom in or out
 
+A technique that shows up in various places:
+mathematics, physics, computer science, statistics..
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -111,29 +115,52 @@ as some other kind of addition, $\hat{+}.$
 % http://www.cis.rit.edu/class/simg716/Gauss_History_FFT.pdf
 
 
-The discrete Fourier transform of a sequence $\{x_j\}_0^{N-1}$
-is given by
+%The discrete Fourier transform of a sequence $\{x_j\}_0^{N-1}$
+%is given by
+%$$
+%%    y_k = \sum_{j=0}^{N-1} x_j e^{2\pi i k \frac{j}{N}}, \ \ k=0,...,N-1.
+%    y_k = \sum_{j=0}^{N-1} x_j \omega^{kj}, \ \ k=0,...,N-1.
+%$$
+%where $\omega=e^{2\pi i/N}.$
+%If $N$ is a composite number $N=N_1 N_2$ then we can re-express this sum as
+%\begin{align*}
+%    y_k &= \sum_{j_1=0}^{N_1-1} \sum_{j_2=0}^{N_2-1} x_{j_1 N_2 + j_2}
+%            \omega^{k (j_1 N_2 + j_2)}, \ \ k=0,...,N-1. \\
+%        &= \sum_{j_1=0}^{N_1-1}
+%            \omega^{k {j_1 N_2}}
+%            \sum_{j_2=0}^{N_2-1} x_{j_1 N_2 + j_2}
+%            \omega^{k {j_2}}, \ \ k=0,...,N-1.
+%\end{align*}
+The discrete Fourier transform of a function $f:\Z_n\to \R$
+is another function $\hat{f}:\Z_n\to \R$ given by
 $$
-%    y_k = \sum_{j=0}^{N-1} x_j e^{2\pi i k \frac{j}{N}}, \ \ k=0,...,N-1.
-    y_k = \sum_{j=0}^{N-1} x_j \omega^{kj}, \ \ k=0,...,N-1.
+    \hat{f}(k) := \sum_{j=0}^{n-1} \omega^{jk}f(j),%\ \ \ \mathrm{with}\ \ \omega:=e^{\frac{2\ph i}{n}}.
 $$
-where $\omega=e^{2\pi i/N}.$
-If $N$ is a composite number $N=N_1 N_2$ then we can re-express this sum as
+where $\omega=e^{2\pi i/n}.$
+If $n$ is a composite number $n=pq$ then we
+write $j=j_1 q + j_2$ with $j_1 = 0,...,p-1$ and $j_2 = 0,...,q-1$
+and also $f(j_1, j_2):=f(j_1 q + j_2)$
+then
 \begin{align*}
-    y_k &= \sum_{j_1=0}^{N_1-1} \sum_{j_2=0}^{N_2-1} x_{j_1 N_2 + j_2}
-            \omega^{k (j_1 N_2 + j_2)}, \ \ k=0,...,N-1. \\
-        &= \sum_{j_1=0}^{N_1-1}
-            \omega^{k {j_1 N_2}}
-            \sum_{j_2=0}^{N_2-1} x_{j_1 N_2 + j_2}
-            \omega^{k {j_2}}, \ \ k=0,...,N-1.
+        \hat{f}(k) = \sum_{j_2=0}^{q-1} \omega^{j_2k} \sum_{j_1=0}^{p-1} \omega^{j_1kq} f(j_1,j_2) 
 \end{align*}
-Note there are two applications of (M) here. ((three??))
-The first turns a sum into a product: $\omega^{a+b}=\omega^a \omega^b.$
-Then we can apply vanilla distributive law to refactor the summation.
-If we pre-compute the exponentials, this leads to a reduction in
-the number of operations required, hence the adjective ``fast''.
+If we rewrite $k$ using
+$k=k_1 q + k_2$ with $k_1 = 0,...,p-1$ and $k_2 = 0,...,q-1$
+and note that 
+$\omega^{j_1kq}=\omega^{j_1(k_2p+k_1)q}=\omega^{j_1k_1q}:$
+$$
+        \hat{f}(k_1, k_2) = \sum_{j_2=0}^{q-1} \omega^{j_2(k_2 p+k_1)} \sum_{j_1=0}^{p-1} \omega^{j_1k_1q} f(j_1,j_2)
+$$
+The point here is that the inner sum does not depend on $k_2:$
+\begin{align*}
+        \hat{f}(k_1, k_2) &= \sum_{j_2=0}^{q-1} \omega^{j_2(k_2 p+k_1)} g(k_1, j_2) \\
+        &\ \ \mathrm{with} \ \ g(k_1,j_2) := \sum_{j_1=0}^{p-1} \omega^{j_1k_1q} f(j_1,j_2)
+\end{align*}
+so we can re-use the calculation of $g(k_1, j_2)$ 
+in each of the terms $\hat{f}(k_1, k_2)$ for $k_2=0,...,q-1.$
 
-Displaying this graphically.
+
+%Displaying this graphically. Bratelli diagram, butterfly network
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -265,6 +292,8 @@ The \emph{indicator} function for \ $x\in V$ \ is \ $\delta_x:V\to \R$
 \ defined as\ $\delta_x(x)=0$\ and\ $\delta_x(y)=\mathrm{width}(G)$
 \ for\ $y\ne x.$
 
+Question: count the number of directed spanning trees in an undirected graph.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -349,6 +378,8 @@ Forward and reverse
 %\section{Type inference?}
 %
 % Haskell can infer the result type of a function from its argument (forward), or the argument type from the result (backward)
+
+% Gaussian elimination? Euclids algorithm? Buchberger's algorithm?
 
 
 \bibliography{refs}{}
