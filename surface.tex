@@ -55,7 +55,8 @@
 \begin{document}
 
 %\title{The surface betrays what lies beneath}
-\title{Show me the morphism}
+%\title{Show me the morphism}
+\title{When the surface betrays what lies beneath}
 
 \author{Simon Burton}
 %\affiliation{Centre for Engineered Quantum Systems, School of Physics, The University of Sydney}
@@ -293,6 +294,17 @@ The \emph{indicator} function for \ $x\in V$ \ is \ $\delta_x:V\to \R$
 \ for\ $y\ne x.$
 
 Question: count the number of directed spanning trees in an undirected graph.
+% Combinatorial species
+
+\emph{Alternative formulation:}
+a vector in a graph $G=(V,E)$ is a vertex, edge pair $(v,e)$ with $v\in e.$
+The tangent space at a vertex $v$ is the set of all vectors $(v,e)$
+at $v$.
+Tanget vectors act on $A$...
+Extremal points of $P(Fix(T))$ give discrete morse function...
+what are the critical points?
+Critical vertices are leaves, critical edges are those that cause loops... (check...)
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -303,10 +315,22 @@ Question: count the number of directed spanning trees in an undirected graph.
 
 Linear programming, simplex method (duality)
 
-Approxiamte Dynamic programming (Reinforcement learning)
+Approximate Dynamic programming (Reinforcement learning)
 % https://webdocs.cs.ualberta.ca/~bowling/papers/07adprl-dualrl.pdf
 
-Bellman's equation a.k.a. Hamilton-Jacobi equations
+Eikonal equation
+
+Bellman's equation ---> Hamilton-Jacobi equations ---> Schrodinger (wave) Equation
+
+% Recursive domain equations
+% Combinatorial species (monads?)
+
+Maximising buying and selling a price function $f:[0,1]\to \R$:
+    The solution is to buy the local minima and sell the
+    local maxima. Can get this via a test function and
+    integration by parts. This is a morse function, with
+    critical points being the trades.
+    Is this also the dynamic programming solution?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -321,16 +345,78 @@ Integration by parts involves a crucial use of the distributive law.
 
 Stoke's theorem ? % Chern-Simons ? AdS-CFT correspondence ?
 
-Green's function...
+Green's function...?
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
+% Wave equation, Elliptic PDE's, Sobolev spaces...??? Elliptic PDE's represent
+% static sollutions (eg. laplace/poisson equation)..
 
-\section{Fast marching}
+\section{Representing Compact Hausdorff spaces}
 
-Eikonal equation
+
+There is a vast theory of representing topological spaces as
+algebraic objects, here we present one of the simplest such
+instances of this
+\cite{Nagata1985}.
+
+%https://books.google.com.au/books?id=DMLSBQAAQBAJ&pg=PA132&lpg=PA132&dq=compact+space+%22lattice+of+continuous+functions%22&source=bl&ots=t5g-GKJjma&sig=xfFhgg3SPhR72Xy9fONk_I3fZxQ&hl=en&sa=X&ved=0ahUKEwjK3OL2rpnKAhUG5KYKHVhvBDUQ6AEIQDAF#v=onepage&q=compact%20space%20%22lattice%20of%20continuous%20functions%22&f=false
+
+Let $X$ be a compact Hausdorff space.
+Let $C(X)$ be the set of real valued continuous functions on $X$.
+%This is a ring under pointwise addition and multiplication.
+This is a lattice under the pointwise meet and join operations inherited from $\R$.
+
+A \emph{prime ideal} of $C(X)$ is $\{x\in X:f(x)=0\}$ where $f:X\to \{0,1\}$
+is any lattice homomorphism.
+
+{\bf Lemma.} A proper subset $J$ of $C(X)$ is a prime ideal
+iff it satisfies the following:\newline
+\ \ \ (1) $f\in J$ and $g\in J$ implies $f\vee g \in J,$ \newline
+\ \ \ (2) $f\in J$ and $g<f$ implies $g\in J,$ \newline
+\ \ \ (3) $f\notin J$ and $g\notin J$ implies $f\wedge g\notin J.$
+\qed
+
+We can associate points $x\in X$ to prime ideals $P$ as follows:
+if $f\in P$ and $g(x)< f(x)$ then $g\in P.$
+
+Given a point $x\in X$ we can build a prime ideal associated to $x$
+as $\{f\in C(X) | f(x)<a\}$ where $a$ is any constant in $\R.$
+
+{\bf Lemma.} Any prime ideal $P$ is associated with exactly one point $x\in X.$
+\qed
+
+To make the association one-to-one we
+define an equivelance relation on prime ideals:
+$P_1\sim P_2$ when $P_1\cap P_2$ contains a prime ideal.
+
+{\bf Lemma.} Two prime ideals $P_1$ and $P_2$ are associated with the same
+point iff $P_1\sim P_2.$
+\qed
+
+The collection of isomorphism classes of prime ideals we denote $\Delta(X).$
+We also write $\Delta(x)$ for the isomorphism class associated with $x\in X.$
+These will be the points of a topological space, whose topology we
+define using the following closure operation.
+Let $B\subset\Delta(X)$ and $q\in\Delta(X).$
+Then $q\in\bar{B}$ iff 
+for each $q'\in B$
+we can choose a prime ideal $P(q')$ such that
+$\cap_{q'\in B} P(q')$ is non-empty and contained in some other prime ideal $P\in q.$
+
+%{\bf Lemma.} This closure operation defined on subsets of $\Delta(X)$ is the
+%same as the closure operation on $X$ 
+{\bf Lemma.} Let $A\subset X$ and $x\in X$. Then $x\in\bar{A}$ iff
+$\Delta(x)\in\overline{\Delta(a)}$ in $\Delta(X).$
+\qed
+
+This shows that $\Delta(X)$ is homeomorphic to the original space $X.$
+Furthermore, since the space $\Delta(X)$
+was defined using only the lattice operations of $C(X)$ we have that
+any two compact Hausdorff spaces $X$ and $Y$ are homeomorphic iff $C(X)$ and
+$C(Y)$ are isomorphic as lattices.
+
+% Notice: these prime ideals look alot like Green's functions, or
+% the ``seed'' functions used to drive Dijkstra's algorithm.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -362,6 +448,12 @@ generating functions?
 creation/annihilation operators?
 denotational semantics?
 
+zippers and differentiating data structures
+
+% Unitary evolution is "immutabile" evolution of quantum state... 
+% Can we use zippers to define a kind of measurement process?
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -380,6 +472,8 @@ Forward and reverse
 % Haskell can infer the result type of a function from its argument (forward), or the argument type from the result (backward)
 
 % Gaussian elimination? Euclids algorithm? Buchberger's algorithm?
+
+% Membrane computing ?
 
 
 \bibliography{refs}{}
