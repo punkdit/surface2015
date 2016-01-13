@@ -73,6 +73,8 @@
 
 \def\Z{\mathbb Z}
 \def\R{\mathbb R}
+\def\Expect{\mathbb E}
+\def\Ind{\mathbb I}
 \def\Complex{\mathbb{C}}
 \def\GL{\mathrm{GL}}
 \def\half{\frac{1}{2}}
@@ -478,6 +480,50 @@ Forward and reverse
 % Gaussian elimination? Euclids algorithm? Buchberger's algorithm?
 
 % Membrane computing ?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\section{Replica Theory}
+
+This method is equivelant to the cavity method, and (but?)
+involves formal manipulations that are not (mathematically) well defined.
+See \cite{Mezard2009,Parisi2007} for more details and references.
+
+Here we are concerned with a an ensemble of classical physics models,
+distributed so that a model
+has $2^N$ energy levels $E_j,\ \ 1\le j\le 2^N$. The $E_j$ are
+Gaussian random variables with mean $0$ and variance $N/2.$
+
+The partition function is then a random variable:
+$$
+    Z = \sum_{j=1}^{2^N} \exp(-\beta E_j).
+$$
+
+The goal here is to compute the expectation value $\Expect(\log Z).$
+To do this we write
+$$
+    \Expect(\log Z) = \lim_{n\to 0} \frac{1}{n} \log(\Expect Z^n),
+$$
+calculate the integer powers of $Z$, and then ``remember'' that
+$n$ was actually a real number.
+\begin{align*}
+    Z^n &= \sum_{i_1,...,i_n=1}^{2^N} \exp(-\beta E_{i_1} - ... -\beta E_{i_n})\\
+        &= \sum_{i_1,...,i_n=1}^{2^N} \prod_{j=1}^{2^N} \exp\Bigl(-\beta E_j \sum_{a=1}^n \Ind(i_a=j)\Bigr).
+\end{align*}
+{\bf Question:} is it fair to call this a path-integral?
+
+Since the $E_j$ are independent Gaussian variables,
+$$
+    \Expect(Z^n) = \sum_{i_1,...,i_n=1}^{2^N} \exp\Bigl(\frac{\beta^2N}{4} \sum_{a,b=1}^n \Ind(i_a=i_b)\Bigr).
+$$
+
+This expectation value can be reinterpreted as the partition
+function of a new ``replicated'' system. Now the dynamical variables
+are the indices $i_1,...,i_n$ and, in contrast to the original system,
+this one is not being sampled from an ensemble of systems.
 
 
 \bibliography{refs}{}
