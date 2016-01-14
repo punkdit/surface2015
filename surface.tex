@@ -3,7 +3,7 @@
 %\documentclass[12pt,notitlepage,longbibliography,nofootinbib,tightenlines]{revtex4-1}
 
 %\documentclass[12pt,a4]{revtex4}
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 %\documentclass[11pt, twocolumn]{article}
 
 
@@ -56,7 +56,9 @@
 
 %\title{The surface betrays what lies beneath}
 %\title{Show me the morphism}
-\title{When the surface betrays what lies beneath}
+%\title{When the surface betrays what lies beneath}
+%\title{Path-integrals are everywhere}
+\title{The meaning is in the arrows between objects, not in the objects themselves}
 
 \author{Simon Burton}
 %\affiliation{Centre for Engineered Quantum Systems, School of Physics, The University of Sydney}
@@ -105,7 +107,12 @@ as some other kind of addition, $\hat{+}.$
 %The simple distributive law states that we can zoom in or out
 
 A technique that shows up in various places:
-mathematics, physics, computer science, statistics..
+mathematics, physics, computer science, statistics, economics...
+
+% univalent mathematics identifies isomorphic objects,
+% these path-integrals also have a kind of contractive ``throat''
+% where many possibilities are identified.. is this the same business?
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -170,11 +177,110 @@ in each of the terms $\hat{f}(k_1, k_2)$ for $k_2=0,...,q-1.$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 
+\section{Cavity method}
+
+% Min-sum equation
+
+We consider an Ising model with pairwise energy terms given by
+
+$$
+    E_{ij} = -\sigma_i\sigma_j
+$$
+
+The min-sum algorithm is a type of message passing algorithm.
+Each spin sends messages to its neighbours.
+These messages are quotations of the form 
+``If you do x then I will charge you y''.
+The message from spin $i$ to spin $j$ at time $t$ is denoted
+$e_{ij}^{(t)}(\sigma_j)$.
+This message tells spin $j$ what the cost if each of
+its actions will be (according to spin $i$).
+Spin $i$ will consult each of its other neighbours 
+(apart from $\sigma_j$) and then minimize its own cost
+(in response to $\sigma_j$):
+
+$$
+e_{ij}^{(t+1)}(\sigma_j) = \min_{\sigma_i}\bigl[ E_{ij}(\sigma_i, \sigma_j)
+  + \sum_{k\in \partial i/j} e_{ki}^{(t)}(\sigma_i) \bigr]
+$$
+
+The final ``marginal'' cost for each spin is given by
+
+$$
+    E_j^{(t+1)}(\sigma_j) = \sum_{i\in \partial j} e_{ij}^{(t)}(\sigma_j)
+$$
+
+which can be used to find energy minima:
+
+$$
+    \sigma_j = \text{argmin} E_j(\sigma_j).
+$$
+
+It's possible to add arbitrary constants to each
+message:
+
+$$
+e_{ij}^{(t+1)}(\sigma_j) = \min_{\sigma_i}\bigl[ E_{ij}(\sigma_i, \sigma_j)
+  + \sum_{k\in \partial i/j} e_{ki}^{(t)}(\sigma_i) \bigr] + C_{ij},
+$$
+
+so we can ``normalize'' each message passed so
+that the minimum value is zero: $\min e_{ij}^{(t)}(\sigma_j) = 0.$
+
+The corresponding fixed point equations are known
+as the {\bf energetic cavity equations} in statistical physics.
+(The ``cavity'' refers to how the equations successively
+remove one variable.)
+
+This algorithm is exact on models with a tree topology,
+but can get stuck on models with loops, especially small
+loops (eg. two dimensional lattices). This is clear
+because the algorithm essentially models zero (?) temperature
+dynamics, and we know that the ising model has no
+stable configurations for linear or treelike topologies.
+
+
 \section{Belief propagation}
+
+
+% Sum-product equation
+
+We consider now the thermal distribution:
+
+$$
+    p(\sigma) = \prod_{ij} e^{-E_{ij}(\sigma_i, \sigma_j)}
+$$
+
+The factors are:
+
+$$
+\phi_{ij}(\sigma_i, \sigma_j) = e^{-E_{ij}(\sigma_i, \sigma_j)}
+$$
+
+Now the messages we pass will be ``beliefs'', $b_{ij}$.
+
+$$
+b_{ij}^{(t+1)}(\sigma_j) = \sum_{\sigma_i}\bigl[ \phi_{ij}(\sigma_i, \sigma_j)
+  + \prod_{k\in \partial i/j} b_{ki}^{(t)}(\sigma_i) \bigr]
+$$
+
+The final marginal for each spin is given by
+
+$$
+    b_j^{(t+1)}(\sigma_j) = \prod_{i\in \partial j} b_{ij}^{(t)}(\sigma_j)
+$$
+
+These equations are structurally the same as the
+min-sum equations, with sum replaced by product and
+min replaced by sum.
+
+
+
 
 Economics
 
-Bethe Anatz (solves Heisenberg in 1D), cavity method.
+Bethe Anatz (solves Heisenberg in 1D)
+
 Is there a forward \& reverse?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -317,6 +423,9 @@ Critical vertices are leaves, critical edges are those that cause loops... (chec
 
 \section{Dynamic programming}
 
+techniques having to do with memoization 
+in order to help an algorithm identify overlapping subproblems and avoid re-computing them.
+
 Linear programming, simplex method (duality)
 
 Approximate Dynamic programming (Reinforcement learning)
@@ -433,6 +542,647 @@ $C(Y)$ are isomorphic as lattices.
 
 forward and reverse
 
+
+%\documentclass[a4paper,onecolumn,11pt,twoside]{book}  % list options between brackets
+%\usepackage{anuthesis}
+%\usepackage{fancyhdr}
+%\usepackage{graphicx}
+%\usepackage{epsf}              % list packages between braces
+
+%%%I use these all the time
+%\RequirePackage{amsmath}
+%\RequirePackage{amssymb}
+%\RequirePackage{amsthm}
+%%\RequirePackage{algorithmic}
+%%\RequirePackage{algorithm}
+%%\RequirePackage{theorem}
+%%\RequirePackage{eucal}
+%\RequirePackage{color}
+%\RequirePackage{url}
+%\RequirePackage{mdwlist}
+%
+%%% Draw fancy figures
+%\RequirePackage[all]{xy}
+%\CompileMatrices
+%\RequirePackage{hyperref}
+%\RequirePackage{graphicx}
+%\RequirePackage[dvips]{geometry}
+
+
+\def\bfe{\bf e}
+\def\bfei{{\bf e}_{\it i}}
+\def\bfj{\bf j}
+\def\bfk{\bf k}
+\def\bfn{\bf n}
+\def\bfz{\bf 0}
+\def\Reals{\mathbb{R}}
+\def\pydx{{\tt pydx}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+%\newenvironment{proof}[1][Proof]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{example}[1][Example]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{remark}[1][Remark]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%
+%\newcommand{\qed}{\nobreak \ifvmode \relax \else
+%      \ifdim\lastskip<1.5em \hskip-\lastskip
+%      \hskip1.5em plus0em minus0.5em \fi \nobreak
+%      \vrule height0.75em width0.5em depth0.25em\fi}
+
+
+Given a function $f(x)$, how do we find the derivative, $f'(x)$ ?
+
+\underbar{\bf Method 1.} 
+{\it Use finite differences.} 
+An example formula:
+$$ f'(x) \approx {f(x+h)-f(x-h)\over 2h} $$
+This is a brute force method.
+
+It is approximate: we don't know how close the answer is to $f'(x)$,
+all we know is that the error in the method is reduced as $h\to 0$.
+The method can be improved by adding in more terms (evaluating $f$ at
+more points). 
+
+This method has the advantage that we can treat $f$ as a {\em black box}:
+its algebraic form (or otherwise) does not need to be known. 
+Of course, we {\em do} need to know that $f(x)$ is differentiable.
+
+
+\underbar{\bf Method 2.} 
+{\it Calculate symbolically (analytic method).}
+This is what we learned in high school.
+Given an algebraic expression for $f(x)$:
+
+    $$ f(x) = x^2, $$
+
+we manipulate this expression using some well-defined recursive rules, 
+to obtain the derivative:
+
+    $$ f'(x) = 2x. $$
+
+Unlike {\bf method 1}, this is an {\em exact} answer. Although we may be hampered
+by our inability to actually {\em find} numerical value for the RHS,
+at {\em this} point we have not degraded our knowledge of $f'$ in any way.
+For reasonably simple functions, the form of the derivative may provide significant
+insight into the problem at hand. For larger functions, of several variables, the
+expression for the derivative (or higher derivatives) may span several pages making
+it useless for any comprehension.
+
+However this method {\em does} require that we have an algebraic expression for $f$,
+and the corresponding rules for differentiating the component algebraic operations.
+
+Furthermore, as we calculate higher derivatives (by iterating this procedure) 
+the formula usually grows in size, {\em exponentially}:
+
+    $$ f(x)       = \exp(x^2) $$
+    $$ f'(x)      = 2x\exp(x^2) $$
+    $$ f''(x)     = 2\exp(x^2) + 4x^2\exp(x^2) $$
+    $$ f^{(3)}(x) = 4x\exp(x^2) + 8x\exp(x^2) + 8x^3\exp(x^2)  $$
+    $$ \dots $$
+
+and $f^{(10)}$ has $1631$ operations.
+
+This is a problem not only for pen and paper calculation, but
+also for (orders of magnitude faster) computer program calculation.
+
+
+\underbar{\bf Method 3.}
+{\em Calculating to first order}.
+This is the physicist's favorite trick.
+Introduce a new symbol $\varepsilon$,
+which is understood to be a {\em tiny} value, so small that $\varepsilon^2$ is considered
+to be {\em zero}.
+
+Given $f(x)=x^2$,
+
+    $$ f(x+\varepsilon) = (x+\varepsilon)^2 = x^2 + 2x\varepsilon + \varepsilon^2 = x^2 + 2x\varepsilon $$
+
+and the derivative of $f$ is now read off as the coefficient of $\varepsilon$:
+
+    $$ f'(x) = 2x. $$
+
+The point of this is {\em not} to produce a (possibly huge) formula for $f'$.
+What we have now is an {\em algorithm}. 
+At each stage in the calculation we are only
+storing {two} numbers: a value and a derivative (the coefficient of $\varepsilon$).
+That is, we directly compute using the formula for $f$, 
+but the objects operated on store a ``value'' and a ``derivative''.
+
+So, this method is similar to {\bf method 2}.
+We have an exact algorithm, 
+and we still need an algebraic form for $f$,
+and an extension of the operations to these ``first order'' numbers
+\footnote {Note also, the way complex numbers extend the
+reals by adding a new symbol $i$ whose square is $-1$.}.
+
+It turns out that we can add more of these $\varepsilon$ symbols, and corresponding
+algebraic identities, to encode higher order derivatives and even
+arbitrary {\em partial} derivatives of multivariate functions.
+
+To calculate $f^{(10)}(x)$ of $f(x)=exp(x^2)$ now takes only 59 operations\footnote{See {\tt pydx.test.test\_nops}.}.
+To see how this is at least {\em possible}, consider the equation for $f^{(3)}(x)$ above.
+Note the redundancy; for example $\exp(x^2)$ appears 3 times.
+In effect, this method is able to eliminate such redundant computation that
+typically comes from differentiating.
+
+These techniques are studied by the mathematicians in {\em Synthetic Differential Geometry}.
+We will use a slightly different formulation of the same idea,
+known by the computer scientists as {\em Automatic Differentiation}.
+
+\def\bfe{\bf e}
+\def\bfei{{\bf e}_{\it i}}
+\def\bfj{\bf j}
+\def\bfk{\bf k}
+\def\bfn{\bf n}
+\def\bfz{\bf 0}
+
+%______________________________________________________________________________
+\subsection{Recursive Formulae for the Calculation of Normalized Derivatives}
+
+%A boldface letter ${\bfn}$ denotes a {\it multi-index}:
+We will make extensive use of {\it multi-index} notation, denoted with 
+a boldface letter:
+
+    $$ {\bfn} = (n_1, \dots, n_r) $$
+
+We also define various operations on multi-indices.
+The norm of a multi index, $|{\bfn}|$, is the sum of its components:
+
+    $$ |{\bfn}| := \sum_i n_i. $$
+
+We add, subtract and compare multi-indices {\it component-wise}:
+
+    $$ {\bfn}\pm{\bf j} := (n_1\pm j_1, \dots, n_r\pm j_r), $$
+
+    $$ {\bf j} \leq {\bfn} \quad \hbox{ iff }\quad  n_1\leq j_1, \ \hbox{ and }\ \dots, n_r\leq j_r, $$
+
+and similarly for other multi-index comparisons.
+The zero multi-index $\bfz$ is zero in all its components.
+The unit multi-index $\bfei$ is zero in every component except for the {\it i'th} component which is one.
+We define factorial as:
+
+    $$ {\bfn}! := \prod_{i=1}^{i=r} n_{\it i}! $$
+
+%\footnote{{\it NB.} the factorial binds tighter than the product: $\prod n!=\prod(n!)$ }:
+
+Given a function $f:\Reals^r\to\Reals$ we use multi-indices to refer to a specific partial derivative:
+
+    $$ f^{({\bfn})}(x) := \Bigl({\partial\ \over\partial x^1}\Bigr)^{n_1} \dots
+\Bigl({\partial\ \over\partial x^r}\Bigr)^{n_r} f(x). $$
+
+We will also have use for the raising of a vector to a multi-index power:
+
+    $$ h^{\bfn} := \prod_i h_i^{n_i}, \quad h\in \Reals^r $$
+
+The {\it normalized ${\bfn}$-derivative} is defined in terms of the derivative: 
+
+%    $$ f^{[{\bfn}]}(x) := {1\over \prod_i n_i!} f^{({\bfn})}(x). $$
+    $$ f^{[{\bfn}]}(x) := {1\over \bfn!} f^{({\bfn})}(x). $$
+
+
+This is now in the form of a Taylor series coefficient. 
+Working with normalized derivatives 
+has the advantage of simplifying many of the equations below.
+For example:
+
+\begin{theorem}
+{\rm (Generalized Leibniz's Rule)}
+If $f$ and $g$ are real-valued $C^\infty$ functions on (an open domain in) $\Reals^r$, then
+
+$$ (fg)^{[{\bfn}]}(x) = \sum_{{\bf j}={\bf 0}}^{\bfn} f^{[{\bf j}]}(x) g^{[{\bfn}-{\bf j}]}(x)  $$
+
+where the sum is taken over all multi-indices ${\bf j}$ such that ${\bf 0}\leq{\bf j}\leq{\bfn}$.
+\end{theorem}
+
+\begin{proof}
+
+We use induction on the Leibniz rule $(fg)'(x)=f'(x)g(x)+f(x)g'(x)$ to obtain:
+
+$$
+    (fg)^{({\bfn})}(x) = \sum_{{\bf j}={\bf 0}}^{\bfn} 
+        {n_1\choose j_1} \dots {n_r\choose j_r} 
+        f^{({\bf j})}(x) g^{({\bfn}-{\bf j})}(x) 
+$$
+
+Now expand the choice symbols, and rewrite in terms of normalized derivatives:
+
+%$$
+%\Bigl({\prod_i n_i!} \Bigr)
+%    (fg)^{[{\bfn}]}(x) = \sum_{{\bf j}={\bf 0}}^{\bfn} 
+%\Bigl(\prod_i {n_i!\over j_i!(n_i-j_i)!}\Bigr)
+%\Bigl(\prod_i j_i! \Bigr)
+%    f^{[{\bf j}]}(x)
+%\Bigl(\prod_i (n_i-j_i)!\Bigr)
+%    g^{[{\bfn}-{\bf j}]}(x) 
+%$$
+
+$$
+{\bfn}!\ 
+(fg)^{[{\bfn}]}(x) = 
+\sum_{{\bf j}={\bf 0}}^{\bfn} \ 
+{\bfn!\over \bfj!(\bfn-\bfj)!}\ 
+{\bfj}!\ 
+f^{[{\bf j}]}(x)\ 
+{(\bfn-\bfj)}!\ 
+g^{[{\bfn}-{\bfj}]}(x) 
+$$
+
+All the products of indices cancel and we have the result.
+
+\end{proof}
+
+
+The following lemma shows how to compose normalized derivatives.
+
+\begin{lemma}
+Let $f$ be a real-valued $C^\infty$ function on (an open domain in) $\Reals^r$. Then,
+
+$$ f^{[\bfn][\bfk]}(x) = {(\bfn+\bfk)!\over \bfn!\bfk!} f^{[\bfn+\bfk]}(x). $$
+
+\end{lemma}
+\begin{proof}
+
+We use the definition of the normalized derivative, 
+together with the fact that derivatives behave like exponents;
+$ f^{(\bfn)(\bfk)}(x) = f^{(\bfn+\bfk)}(x) $.
+
+%$$ f^{[\bfn][\bfk]}(x) = {1\over \bfn!\bfk!} f^{(\bfn)(\bfk)}(x) $$
+%$$ = {1\over \bfn!\bfk!} f^{(\bfn+\bfk)}(x) $$
+%$$ = {(\bfn+\bfk)!\over \bfn!\bfk!} f^{[\bfn+\bfk]}(x) $$
+
+\begin{align*}
+ f^{[\bfn][\bfk]}(x) &= {1\over \bfn!\bfk!} f^{(\bfn)(\bfk)}(x)  \\
+                     &= {1\over \bfn!\bfk!} f^{(\bfn+\bfk)}(x)  \\
+                     &= {(\bfn+\bfk)!\over \bfn!\bfk!} f^{[\bfn+\bfk]}(x) 
+\end{align*}
+
+\end{proof}
+
+The next corollary is the key ingredient in finding normalized derivatives
+of the transcendental functions in {\bf Proposition 4.2.4}.
+It tells us how to ``bootstrap'' an equation involving first order differentials
+to arbitrary order.
+
+\begin{corollary}
+Let $f$, $g$ and $h$ be real-valued $C^\infty$ functions on (an open domain in) $\Reals^r$
+such that $f^{[{\bfei}]}(x)=g(x)h^{[{\bfei}]}(x)$. %, for some multi-index ${\bfei}$.
+If ${\bfei}\leq{\bf k}$, then 
+
+$$
+    f^{[\bfk]}(x) = \sum_{\bfj=\bfz}^{\bfk-\bfei} {(k_i-j_i)\over k_i} g^{[\bfj]}(x) h^{[\bfk-\bfj]}(x)
+$$
+
+\end{corollary}
+\begin{proof}
+Let $f^{[{\bfei}]}(x)=g(x)h^{[{\bfei}]}(x)$.
+We take the $\bfk-\bfei$'th normalized derivative of both sides:
+
+\begin{align*}
+    f^{[\bfei][\bfk-\bfei]}(x) &= { \bfk! \over \bfei!(\bfk-\bfei)! } f^{[\bfk]}(x)
+        &\qquad\hbox{({\bf Lemma})} \\
+                               &= k_i f^{[\bfk]}(x)
+\end{align*}
+
+\begin{align*}
+    \bigl(g(x)h^{[\bfei]}(x)\bigr)^{[\bfk-\bfei]}
+            &= \sum_{\bfj=\bfz}^{\bfk-\bfe} g^{[\bfj]}(x) h^{[\bfei][\bfk-\bfei-\bfj]}(x) 
+        &\qquad\hbox{({\bf Leibniz})} \\
+            &= \sum_{\bfj=\bfz}^{\bfk-\bfe}
+                g^{[\bfj]}(x) {(\bfk-\bfj)!\over \bfei!(\bfk-\bfei-\bfj)!} h^{[\bfk-\bfj]}(x) 
+        &\qquad\hbox{({\bf Lemma})} \\
+            &= \sum_{\bfj=\bfz}^{\bfk-\bfe}
+                g^{[\bfj]}(x) {(k_i-j_i)!\over (k_i-1-j_i)!} h^{[\bfk-\bfj]}(x) \\
+            &= \sum_{\bfj=\bfz}^{\bfk-\bfe}
+                (k_i-j_i) g^{[\bfj]}(x) h^{[\bfk-\bfj]}(x)
+\end{align*}
+
+And the result follows.
+
+\end{proof}
+
+
+
+The following proposition forms the heart of the recursive
+implementation of automatic differentiation described in section 4.6.
+
+\begin{proposition}
+Given $g$ and $h$ real-valued $C^\infty$ functions on (an open domain in) $\Reals^r$
+and multi-index $\bfn$ such that $\bfei\leq\bfn$,
+%${\bf e}_i$ with non-zero $i$'th component, $|{\bf e}_i|=1$ and ${\bf 0}<{\bf e}_i\leq{\bfn}$,
+we have the following:
+
+\item{(1)} If $f(x)=g(x)\pm h(x)$, then 
+    $$f^{[{\bfn}]}(x) = g^{[{\bfn}]}(x)\pm h^{[{\bfn}]}(x).$$
+
+\item{(2)} If $f(x)=g(x)h(x)$, then 
+    $$f^{[{\bfn}]}(x) = \sum_{\bfj={\bfz}}^{\bfn}
+        g^{[{\bfn}-{\bf j}]}(x) h^{[{\bfn}]}(x). $$
+
+\item{(3)} If $f(x)=g(x)/h(x)$, then 
+    $$f^{[{\bfn}]}(x) = {1\over h^{[{\bf 0}]}(x)}
+        \Bigl[ g^{[{\bfn}]}(x) -
+            \sum_{{\bf j}>{\bf 0}}^{\bfn}  h^{[{\bf j}]}(x)  f^{[{\bfn}-{\bf j}]}(x)
+        \Bigr].$$ 
+
+\item{(4)} If $f(x)=e^{g(x)}$, then 
+    $$ f^{[{\bfn}]}(x) = {1\over n_i} 
+        \sum_{{\bf j}={\bf 0}}^{{\bfn}-{\bf e}_i}
+            (n_i-j_i) f^{[{\bf j}]}(x) g^{[{\bfn}-{\bf j}]}(x).
+$$
+
+\item{(5)} If $f(x)=\ln g(x)$, then 
+$$ f^{[{\bfn}]}(x) = {
+    1\over g^{[\bf 0]}(x)} 
+        \Bigl[ g^{[{\bfn}]}(x) -
+            {1 \over n_i}
+            \sum_{ {\bfj}>{\bfz} }^{{\bfn}-{\bfei} }
+                (n_i-j_i) g^{[{\bf j}]}(x) f^{[{\bfn}-{\bf j}]}(x)
+        \Bigr].
+$$
+
+\item{(6)} If $f(x)=\sqrt{g(x)}$, then 
+$$ f^{[{\bfn}]}(x) = {
+    1\over f^{[\bf 0]}(x)} 
+        \Bigl[ {1\over 2}g^{[{\bfn}]}(x) -
+            {1 \over n_i}
+            \sum_{ {\bfj}>{\bfz} }^{{\bfn}-{\bfei} }
+                (n_i-j_i) f^{[{\bf j}]}(x) f^{[{\bfn}-{\bf j}]}(x)
+        \Bigr].
+$$
+
+\item{(7)} If $f(x)=\tan^{-1}{g(x)}$, 
+define $h(x)={1\over 1+g(x)}$, then
+
+$$ 
+    f^{[\bfn]}(x) = {1\over n_i} \sum_{\bfj=\bfz}^{\bfn-\bfei}
+        (n_i - j_i) h^{[\bfj]}(x) g^{[\bfn-\bfj]}(x).
+$$
+
+\item{(8)} If $f(x)=\sin^{-1}{g(x)}$,
+define $h(x)={1\over \sqrt{1-g^2(x)}}$, then
+
+$$ 
+    f^{[\bfn]}(x) = {1\over n_i} \sum_{\bfj=\bfz}^{\bfn-\bfei}
+        (n_i - j_i) h^{[\bfj]}(x) g^{[\bfn-\bfj]}(x).
+$$
+
+
+\item{(9)} If $f(x)=\sin{h(x)}$ and $g(x)=\cos{h(x)}$, then
+
+$$ 
+    f^{[\bfn]}(x) = {1\over n_i} \sum_{\bfj=\bfz}^{\bfn-\bfei}
+        (n_i - j_i) g^{[\bfj]}(x) h^{[\bfn-\bfj]}(x).
+$$
+
+$$ 
+    g^{[\bfn]}(x) = -{1\over n_i} \sum_{\bfj=\bfz}^{\bfn-\bfei}
+        (n_i - j_i) f^{[\bfj]}(x) h^{[\bfn-\bfj]}(x).
+$$
+
+
+\end{proposition}
+
+\begin{proof}
+(1) is obvious.
+(2) is Leibniz's formula.
+To prove (3), apply (2) to $g(x)=f(x)h(x)$.
+
+For the next items, we write an equation matching the form
+of the hypothesis of {corollary 4.2.3}, so that we can bootstrap to arbitrary orders.
+
+{(4)} $f^{[\bfei]}(x) = f(x) g^{[\bfei]}(x) $,
+
+{(5)} $g^{[\bfei]}(x) = g(x) f^{[\bfei]}(x)$,
+
+{(6)} $g^{[\bfei]}(x) = 2f(x) f^{[\bfei]}(x)$,
+
+{(7)} and {\it (8)} $f^{[\bfei]}(x) = h(x) g^{[\bfei]}(x) $,
+
+%{(7)}  $f^{[\bfei]}(x) = h(x) g^{[\bfei]}(x) $, where $h(x)={1\over 1+g(x)}$.
+%
+%{(8)} $f^{[\bfei]}(x) = h(x) g^{[\bfei]}(x) $, where $h(x)={1\over \sqrt{1-g^2(x)}}$.
+
+{(9)} $f^{[\bfei]}(x) = g(x) h^{[\bfei]}(x) $, and 
+$g^{[\bfei]}(x) = -f(x) h^{[\bfei]}(x). $
+
+\end{proof}
+
+We are now able to justify the efficiency claims made in the introduction.
+
+\begin{corollary}
+The number of arithmetic operations required to compute the normalized derivatives
+of a function on $\Reals^r$ up to order $\bfn$ is $O(\prod_i n_i^2).$
+\end{corollary}
+
+Other operations can be derived in terms of the proceeding formulae.
+For example,
+
+%\begin{itemize}
+{\it (10)} If $ f(x) = g(x)^t $, then $ f(x)=e^{r\ln g(x)} $, and
+
+{\it (11)} If $ f(x) = \sinh(g(x)) $, then $ f(x)={1\over 2}(e^{g(x)}-e^{-g(x)}) $.
+
+%\end{itemize}
+
+%One thing that seems slightly odd in the previous proposition
+%is the arbitrary form of the $\bfei$ indices. 
+%This is a reflection of the fact that partial derivatives
+%commute ({\em really ???}); they define the path we take
+%over the induction (recursion) down to order zero.
+
+%______________________________________________________________________________
+\subsection{Jets of Functions} 
+
+%When we wish to specify the components of a (univariate) jet we use the
+%bracket notation:
+Loosely speaking, the {\it jet} of a function $f:\Reals\to\Reals$
+at a point $x=a\in\Reals$ is the sequence of its (normalized) derivatives.
+For the univariate case we use the bracket notation:
+
+$$
+%    \langle f^{[{\bf 0}]}(x),  f^{[{\bf 1}]}(x), \dots \rangle
+    \langle f^{[{0}]}(a),  f^{[{1}]}(a), \dots \rangle.
+$$
+
+%Proceeding naively, a variable $x$ considered as a function $f(x)=x$ will
+%Proceeding naively, a constant function $f(x)=b$ will have
+So, a constant function $f(x)=b$ will have
+jet  $\langle b, 0\rangle$, the linear function
+$f(x)=x$ will
+have jet $\langle x, 1 \rangle$. 
+
+
+The idea now is that we ``forget'' about the function
+and compute just with the jets themselves.
+An example calculation would proceed 
+
+$$
+%    \langle x, 1 \rangle^2 = \langle x^2, 2x, {1\over 2} \rangle. 
+    \langle x, 1 \rangle^2 = \langle x^2, 2x \rangle. 
+$$
+
+What is going on here?
+We have a jet $\langle x, 1\rangle$, 
+which we represent with the function $g(x)=x$.
+We take another function, $f(x)=x^2$.
+Then, we are calculating the zeroth and first derivative
+of $f\circ g$ using the chain rule.
+The chain rule is merely a recursive formula for finding these
+derivatives.
+The bracket notation embodies this recursion
+by placing the derivative information in the foreground.
+%Hense the bracket notation, we are no longer computing
+%with functions
+
+%Or, going back to using functions, 
+%we start with $g(x)=x$, that
+%has jet $\langle x, 1\rangle$, and $f(x)=x^2$ 
+%The notation is meant to suggest that we don't need the actual definition 
+%of $f$
+
+More formally, we define a jet as the {\it equivalence class} of all (smooth) functions
+that ``go through'' the jet. 
+That is, the functions in each equivalence class share all derivatives
+up to a specified order.
+
+\begin{definition}
+Given some multi-index $\bfn$, the equivalence relation $\thicksim_{\bfn}$ 
+at a fixed base point $x=a\in\Reals^r$,
+is defined between smooth functions $\Reals^r\to\Reals$ as
+%We fix a base point $x=a\in\Reals^r$,
+%then
+%$f\thicksim_{\bfn} g$ iff $f^{[\bfj]}(a)=g^{[\bfj]}(a)$ for ${\bf 0}\le \bfj\le \bfn$.
+$$f\thicksim_{\bfn} g \quad \hbox{iff}\quad  
+f^{[\bfj]}(a)=g^{[\bfj]}(a)\quad  \hbox{for}\quad  
+{\bf 0}\le \bfj\le \bfn.$$
+
+Each of the resulting equivalence classes is known as a 
+rank-$r$ $\bfn$-jet, and the set of all these equivalence classes
+is denoted %$J^r_{\bfn}(a)$,  
+$$ J^r_{\bfn}(a) := \{f:\Reals^r\to\Reals| f \ \hbox{is smooth} \}/\thicksim_{\bfn}. $$
+
+%The set of rank-$r$ $\bfn$-jets at a base point $x=a$, $J^r_{\bfn}(a)$,  is defined as
+%the set of equivalence classes under $\thicksim_{\bfn}$:
+%$$ J^r_{\bfn}(a) := \{f:\Reals^r\to\Reals| f \hbox{is smooth} \}/\thicksim_{\bfn}. $$
+
+%An element of $ J_{\bfn}(x) $ is refered to as an $\bfn$-jet at
+%The rank of an $\bfn$-jet is the dimensionality $r$ of the domain.
+%, ie.  the number of free variables. 
+\end{definition}
+ 
+Note that the rank $r$ is exactly the length of the multi-index $n$.
+So, for $r=0$, there is only one possible index $\bfn$, the empty tuple.
+Also, the only function in a rank-$0$ jet is a nullary
+function, ie. a constant.
+In this way we can identify $J^0_{()}(a)$ with $\Reals$.
+
+A specific equivalence class in $J^r_{\bfn}(a)$ can be referred to
+by specifying the derivatives of one of the functions in the equivalence class.
+\begin{definition} {\bf Univariate bracket notation}
+$\langle y_0, y_1, \dots, y_n \rangle\in J^r_n(a)$ is defined to be
+the equivalence class containing the function
+$$ f(x) = \sum_{j=0}^n y_j (x-a)^j. $$
+\end{definition}
+
+Calculating with jets makes sense because of the following lemma.
+
+\begin{lemma}
+    Given smooth functions $f$, $g$, $h$, with 
+$ h\thicksim_{\bfn}g$ at $x=a,$ 
+
+%    $$ f^{[n]}(g(x)) = f^{[n]}(\langle g^{[0]}(x), \dots, g^{[n]}(x)\rangle) $$
+%    $$ f^{[\bfn]}(g(a)) = f^{[\bfn]}(h(a)) $$ 
+    $$ (f\circ g)^{[\bfn]}(a) = (f\circ h)^{[\bfn]}(a) $$ 
+
+That is, $(f\circ g)^{[\bfn]}(a)$ depends only on the derivatives of $g(x),$
+at $x=a,$ up to order~$\bfn$.
+\end{lemma}
+\begin{proof}
+Induction using the chain rule.
+\end{proof}
+
+%Indeed, we use the notation in expressions such as $f(\langle x_0, \dots, x_n\rangle)$
+Indeed, we use the notation in expressions such as $f(\langle y_0, \dots, y_n\rangle)^{[j]}$
+to imply that we choose some function $g\in\langle y_0, \dots, y_n\rangle$ 
+%and compute $f(g(a))$. The lemma tells
+and compute $(f\circ g)^{[j]}(a)$. The lemma tells
+us that as long as we don't differentiate $f\circ g$ too much (ie. $j\le n$),
+the choice of $g$ does not matter.
+And what is the variable $x$ ?
+It is the dependent variable, but we don't care;
+the data contained in the components of
+the jet allow us to calculate the function value $f(g(a))$ and
+derivatives (with respect to $x$) via the chain rule.
+We do not carry the base point $a$ through the calculation, we
+only carry the data contained in the jet(s).
+
+Note the careful placement of the $[j]$ superscript in the
+previous paragraph.
+The expression $f(\langle y_0, \dots, y_n\rangle)^{[j]}$
+is extracting the $j$-th component from a jet,
+which is quite different from 
+ $f^{[j]}(\langle y_0, \dots, y_n\rangle):$
+computing {\em with} the $j$-th derivative of $f.$
+
+%We need an example.
+%Let our function be $f(x)=x^2.$
+%We wish to compute $f'(x)$ at $x=3$.
+%So, we need the \dots ???
+
+%Furthermore, the machinery in section 4.2 is the explicit 
+%construction of the calculations that enable us
+%to get by without 
+
+% XXX sub 4.4.2 -> 4.4.3 XXX
+
+%This lemma allows us to write formulae involving jet's, such as $f(\langle x, y\rangle)$
+%where it is understood that we choose some function $h$ with $h^0
+
+%If $f$ and $g$ are analytic 
+%we can look at the composition of their Taylor polynomials:
+%
+%        $$ g(x+h) = \sum_i h^i g^{[i]}(x) $$
+%        $$ f(x+h) = \sum_i h^i f^{[i]}(x) $$
+%        $$ f(g(x+h)) = \sum_i h^i \prod_j f^{[j]}(g(x)) g^{[i-j]}(x) $$
+%$$ XX FIXME $$
+%
+%and we see that the coefficient of $h^n$ does not depend on
+%$g^{[i]}(x)$ for $i>n$.
+
+The first reference to automatic differentiation found is in Wengert \cite{Wengert1964} from 1964.
+
+Griewank \cite{Griewank1989} discusses in detail
+the advantages automatic differentiation has over the symbolic methods.
+
+We use multivariate automatic differentiation which is 
+thoroughly worked out in Neidinger \cite{Neidinger1992}
+in terms of recursive algorithms presented as pseudo-code.
+%Ugly ! non-normalized derivatives. Used only to verify formulae.
+Jorba and Zou \cite{JorbaZou2005} have a much cleaner approach
+to automatic differentiation
+although they only develop the univariate case, which is sufficient
+for their purposes.
+%Jorba and Zou \cite{JorbaZou} outline automatic differentiation
+%for the single variable case. 
+%They only need single variable to calculate Taylor series coefficients
+%for solving ODE's.
+
+Our exposition is essentially a re-write of Neidinger's algorithms and
+data structures in terms of normalized-derivatives, following the style found in Jorba and Zou. 
+%We also use lazy-evaluation techniques which greatly simplifies the overall implementation
+%and use of {\tt pydx}. 
+%This means it is not necessary to know {\it apriori} to what order we will evaluate  
+%derivatives, whereas Neidinger's algorithms compute all derivatives statically.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -465,21 +1215,162 @@ zippers and differentiating data structures
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 
-\section{Renormalization?}
+\section{Real-space renormalization group}
 
-works in 1d... dual is zoom-in ?
+%works in 1d... reverse is zoom-in ?
 
-\section{Homology/Co-Homology?}
+The spins $\sigma$ are distributed according
+to the Gibb's distribution:
+\begin{align*}
+p(\sigma) &= {{1} \over {Z}}e^{H(\sigma)}
+\end{align*}
 
-Forward and reverse
+with normalizing constant:
+\begin{align*}
+Z &= \sum_{\sigma} e^{H(\sigma)}.
+\end{align*}
 
-%\section{Type inference?}
-%
-% Haskell can infer the result type of a function from its argument (forward), or the argument type from the result (backward)
+We introduce more random variables $\mu$ and
+use Baye's rule:
+\begin{align*}
+p(\sigma | \mu) &= {{1} \over {p(\mu)}}p(\mu | \sigma)p(\sigma)
+\end{align*}
 
-% Gaussian elimination? Euclids algorithm? Buchberger's algorithm?
+Now we split the hamiltonian into two terms
+\begin{align*}
+H &= H_{0}+V
+\end{align*}
 
-% Membrane computing ?
+so that
+\begin{align*}
+p(\sigma | \mu) &= {{1} \over {p(\mu)}}p(\mu | \sigma){{1} \over {Z}}e^{H_{0}+V},
+\end{align*}
+
+and define the following conditional probability:
+\begin{align*}
+p_{0}(\sigma | \mu) &= {{1} \over {Z_{0}(\mu)}}p(\mu | \sigma)e^{H_{0}}
+\end{align*}
+
+with
+\begin{align*}
+Z_{0}(\mu) &= \sum_{\sigma} p(\mu | \sigma)e^{H_{0}}.
+\end{align*}
+
+This gives rise to the conditional expectation value:
+\footnote{Normally physicists use the $\langle A\rangle$ notation
+but this looks confusing when we condition on
+$\mu$: $\langle A|\mu\rangle$?}
+
+\begin{align*}
+E_{0}(A | \mu) &= {{1} \over {Z_{0}(\mu)}}\sum_{\sigma} p(\mu | \sigma)e^{H_{0}(\sigma)}A(\sigma),
+\end{align*}
+
+So now we have
+\begin{align*}
+E_{0}(e^{V} | \mu) &= {{1} \over {Z_{0}(\mu)}}\sum_{\sigma} p(\mu | \sigma)e^{H_{0}+V}
+\end{align*}
+
+and
+$$\boxed{Z = \sum_{\mu} Z_{0}(\mu)E_{0}(e^{V} | \mu)}$$
+
+This is our magic formula, if we choose
+$H_0, V, \mu$ wisely we can use it to find $Z$.
+
+All these formula are completely general, so
+now we decide what are the $H_0, V, \mu$.
+We divide our lattice into blocks of three spins.
+$H_0$ is interactions within a block and $V$ is
+interactions between blocks.
+We have one $\mu_I$ variable for each block $I$,
+it is the majority vote of the three spins %$\sigma$
+in that block.
+
+We make use of the cumulant expansion to first order:
+\begin{align*}
+E(e^{A}) &\simeq e^{E(A)}
+\end{align*}
+
+And later we use the second order expansion:
+\begin{align*}
+E(e^{A}) &\simeq e^{E(A)+{{1} \over {2}}E(A^{2})-E(A)^{2}}
+\end{align*}
+
+To compute $Z_0(\mu)$:
+\begin{align*}
+Z_{0}(\mu) &= \sum_{\sigma} p(\mu | \sigma)e^{H_{0}}\\
+ &= \sum_{\sigma} \prod_{I} p(\mu_{I} | \sigma_{I,1}, \sigma_{I,2}, \sigma_{I,3})e^{F(\sigma_{I})}\\
+ &= \prod_{I} \sum_{\sigma} p(\mu_{I} | \sigma_{I,1}, \sigma_{I,2}, \sigma_{I,3})e^{F(\sigma_{I})}\\
+ &= \prod_{I} f(\mu_{I})
+\end{align*}
+
+where $F(\sigma_I)$ is defined as:
+\begin{align*}
+F(\sigma_{I}) &= K(\sigma_{I,1}\sigma_{I,2}+\sigma_{I,1}\sigma_{I,3}+\sigma_{I,2}\sigma_{I,3})+h(\sigma_{I,1}+\sigma_{I,2}+\sigma_{I,3})
+\end{align*}
+
+and $f$ is as follows:
+\begin{align*}
+f(1) &= e^{3K+3h}+3e^{-K+h}
+\end{align*}
+\begin{align*}
+f(-1) &= e^{3K-3h}+3e^{-K-h}.
+\end{align*}
+
+We can now introduce variables $A$ and $B$ such that:
+\begin{align*}
+f(\mu_{I}) &= e^{A+B\mu_{I}}
+\end{align*}
+
+and finally we get:
+$$\boxed{Z_{0}(\mu) = \prod_{I} e^{A+B\mu_{I}}}$$
+
+
+Let's write $V(\sigma)$ as
+\begin{align*}
+V(\sigma) &= \sum_{i,j} \chi_{i,j}\sigma_{i}\sigma_{j}
+\end{align*}
+
+Ie., $\chi$ encodes connections between blocks.
+
+Now we compute:
+\begin{align*}
+E_{0}(V | \mu) &= {{1} \over {Z_{0}(\mu)}}\sum_{\sigma} p(\mu | \sigma)e^{H_{0}(\sigma)}V(\sigma)\\
+ &= {{1} \over {Z_{0}(\mu)}}\sum_{\sigma} \sum_{i,j} p(\mu | \sigma)\chi_{i,j}e^{H_{0}(\sigma)}\sigma_{i}\sigma_{j}\\
+ &= {{1} \over {Z_{0}(\mu)}}\sum_{\sigma} \sum_{i,j} p(\mu | \sigma)\chi_{i,j}\prod_{I} e^{F(\sigma_{I})}\sigma_{i}\sigma_{j}\\
+ &= \sum_{i,j} \chi_{i,j}E(\sigma_{i}\sigma_{j} | \mu)\\
+ &= \sum_{i,j} \chi_{i,j}E(\sigma_{i} | \mu)E(\sigma_{j} | \mu)
+\end{align*}
+
+This last step works because the $\sigma_i$ and $\sigma_j$ are
+conditionally independant given $\mu$ whenever $\chi_{i, j}$ is
+nonzero. Ie., when $i$ and $j$ refer to different blocks we get:
+\begin{align*}
+p_{0}(\sigma_{i} | \mu)p_{0}(\sigma_{j} | \mu) &= p_{0}(\sigma_{i}, \sigma_{j} | \mu).
+\end{align*}
+
+Now:
+\begin{align*}
+E_{0}(\sigma_{i} | \mu) &= {{1} \over {Z_{0}(\mu)}}\sum_{\sigma} p(\mu | \sigma)e^{H_{0}(\sigma)}\sigma_{i}
+\end{align*}
+
+Using the block index notation:
+\begin{align*}
+E_{0}(\sigma_{J,i} | \mu) &= {{1} \over {Z_{0}(\mu)}}\left({\prod_{I \not = J} \sum_{\sigma_{i}} p(\mu_{I} | \sigma_{I})e^{F(\sigma_{I})}}\right)\left({\sum_{\sigma_{J,1},\sigma_{J,2},\sigma_{J,3}} p(\mu_{J} | \sigma_{J})e^{F(\sigma_{J})}\sigma_{J,i}}\right)\\
+ &= {{1} \over {Z_{0}(\mu)}}\left({\prod_{I \not = J} f(\mu_{I})}\right)g(\mu_{J})\\
+ &= f(\mu_{J})^{-1}g(\mu_{J})
+\end{align*}
+
+with
+\begin{align*}
+g(1) &= e^{3K+3h}+e^{-K+h}
+\end{align*}
+\begin{align*}
+g(-1) &= e^{3K-3h}-e^{-K-h}
+\end{align*}
+
+and finally we get:
+$$\boxed{E_{0}(V | \mu) = 2K\sum_{\langle I,J\rangle} (C+D\mu_{I})(C+D\mu_{J})}$$
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -524,6 +1415,22 @@ This expectation value can be reinterpreted as the partition
 function of a new ``replicated'' system. Now the dynamical variables
 are the indices $i_1,...,i_n$ and, in contrast to the original system,
 this one is not being sampled from an ensemble of systems.
+
+%\section{Homology/Co-Homology?}
+%
+%Forward and reverse
+
+%\section{Type inference?}
+%
+% Haskell can infer the result type of a function from its argument (forward), or the argument type from the result (backward)
+
+% Gaussian elimination? Euclids algorithm? Buchberger's algorithm?
+
+% Membrane computing ?
+
+% AdS-CFT correspondence
+
+% quantum field theory, Feynman Vs. Schwinger 
 
 
 \bibliography{refs}{}
