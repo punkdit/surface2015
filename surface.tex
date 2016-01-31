@@ -58,7 +58,9 @@
 %\title{Show me the morphism}
 %\title{When the surface betrays what lies beneath}
 %\title{Path-integrals are everywhere}
-\title{The meaning is in the arrows between objects, not in the objects themselves}
+%\title{The meaning is in the arrows between objects, not in the objects themselves}
+%\title{Design patterns in message passing}
+\title{The Physics of Meaning}
 
 \author{Simon Burton}
 %\affiliation{Centre for Engineered Quantum Systems, School of Physics, The University of Sydney}
@@ -112,6 +114,122 @@ mathematics, physics, computer science, statistics, economics...
 % univalent mathematics identifies isomorphic objects,
 % these path-integrals also have a kind of contractive ``throat''
 % where many possibilities are identified.. is this the same business?
+
+
+Coming more from a programming background, I've also had a keen
+interest in networks, and how ``information'' propagates through networks.
+
+In particular, I've long been fascinated by a seeming analogy
+between path integrals (in physics) and certain optimization problems
+in computer science, eg. shortest path in a network.
+
+This analogy seems to gobble up many other algorithms, depending on how
+loose one is being. From past experience working in a machine
+learning context, things like Belief Propagation and also
+the Fast Fourier Transform fit in. According to those guys,
+the key is a ``generalized distributive law'', which I think
+amounts to what mathematicians would call a (semi-)ring, or rig.
+
+But it seems that this analogy can be pushed much further.
+For example, combinatorial species seem to fit. Here the ``network''
+has as vertices the set of all possible structures that a species
+can produce (i'm being a bit loose here) and the edges of the
+network come from differentiating: the differential of
+a species ``constructs'' larger structures from smaller ones.
+This looks like a ``wavefront'', the size of which is the
+number of structures on an n-element set.
+
+This fits in nicely with the idea of ``zippers'' in 
+computer science. In pure functional programming all
+data structures are immutable, which makes programs easier
+to reason about (and so less bugs!) but now the programmer
+has to work harder, for example how does one insert an
+element into an immutable list of elements? The idea behind
+zippers is essentially the same as for combinatorial
+species. They use the differential to keep track of a
+``hole'' or ``context'' in a given data structure. This 
+(along with some other magic i don't quite understand)
+now looks like another kind of ``wavefront'' propagating 
+over a network of immutable values as the computation proceeds.
+
+Automatic Differentiation is another area of importance
+for machine learning. Physicists would
+call this perturbation theory. It comes in two
+flavours: forward and reverse. The forward version
+is the one I understand. Here the network is the
+``parse tree'' of some concrete expression, eg. $(x^2)*sin(x)$.
+Instead of differentiating this directly (symbolically),
+we substitute $x$ with $x+\varepsilon$, and ignore higher powers of $\varepsilon$.
+It feels like this should fit in with the above analogy,
+since we replace a kind of complicated path integral 
+(symbolic differentiation), 
+with a (much easier to deal with) propagating wavefront.
+
+One other oddball involves logic and cut-elimination.
+It seems like this might just be an example of using
+the ``and, or'' ring of ``true, false''. In brief, Gentzen
+style sequent calculus is propagating a wavefront across
+a natural deduction proof network. Cut-elimination is
+the key that makes this thing work.
+
+Many similar ideas show up in different guises.
+*) For instance, green's functions appear in many of these applications,
+and look like some kind of ``dual'' to the vertices in the network.
+*) Things tend to break down in the presence of loops: eg. 
+belief propagation works perfectly on trees, but not so well on
+networks with (small) loops. Quantum field theory would be
+great except we can't evaluate Feynman diagrams that have
+loops.
+*) Two modes: forward and backward. In functional programming
+this shows up as ``eager'' versus ``lazy'' evaluation.
+
+Pondering all of this it seems that these wavefronts could
+all be some kind of arrows in a category. Indeed, distributivity
+is the condition for a homomorphism (multiplication by a scalar
+is a homomorphism of the additive group.) So perhaps there
+is some kind of generalized ``arrow'' that can serve.
+
+%I keep reading your 
+%blog posts about network theory and it finally has occurred to me that
+%maybe spans can do this. Boy was I surprised to find that you
+%and the other n-category guys have already worked alot of this
+%out, and I was astounded to find the Russian school of ``idempotent
+%analysis''. Thankyou for writing all of that down!
+
+It seems to me that physicists should pay more attention to
+all of this. For me it even provides a motivation for quantum theory,
+at a time when physicists don't have any good intuition
+for why the laws of quantum physics are the way they are.
+
+Machine learning research appears to progress in a succession of
+exciting breakthroughs followed by chilly winters of not much progress.
+One of the first such breakthroughs was ``dynamic programming'', which
+seems to have been enshrined into the field of ``operations research''.
+
+The matrix power method (for finding the eigenvector with the largest eigenvalue)
+is also a kind of path-integral. Should that be added to the list? This is
+the essence of the google page-rank algorithm. I guess this is a kind of
+``transfer matrix''.
+
+The so-called ``renormalization group'' in statistical physics also seems to
+crucially apply the distributive law, at least in 1 dimensional lattice systems. I'm not
+so sure about higher dimensional lattices, where there are alot of little loops
+that once again tends to limit the effectiveness of these schemes. 
+
+Physicists use a kind of belief propagation, they call it the ``cavity method''. 
+It works well in one dimensional lattices. The ``Bethe Ansatz'' works perfectly.
+(Quantum Inverse Scattering)
+Replica theory, and ``replica symmetry breaking'' has no good mathematical basis.
+Ultrametric spaces show up here. These are metric spaces where
+the plus in the triangle inequality is replaced with a max (as in the max-plus semi-ring).
+Apparently, Parisi was originally motivated by considering
+the permutation group $S_n$ when $n<1$, particularly the limit as $n$ goes to zero.
+
+Convexity...
+http://arxiv.org/pdf/0903.5522v3.pdf
+
+Recursive domain equations... least fixed points in POSETs (DCPOs..)
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -467,7 +585,8 @@ Integration by parts involves a crucial use of the distributive law.
 
 Stoke's theorem ? % Chern-Simons ? AdS-CFT correspondence ?
 
-Green's function...?
+Green's functions,
+boundary element method: http://george-and-bem.ce.umn.edu/fundamental.html
 
 % Wave equation, Elliptic PDE's, Sobolev spaces...??? Elliptic PDE's represent
 % static sollutions (eg. laplace/poisson equation)..
@@ -1215,9 +1334,11 @@ denotational semantics?
 
 zippers and differentiating data structures
 
-% Unitary evolution is "immutabile" evolution of quantum state... 
+% Unitary evolution is ``immutabile" evolution of quantum state... 
 % Can we use zippers to define a kind of measurement process?
 
+% Google pagerank, power method, transfer matrix
+% Word indexes: trie's, suffix trees, ...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1425,12 +1546,15 @@ function of a new ``replicated'' system. Now the dynamical variables
 are the indices $i_1,...,i_n$ and, in contrast to the original system,
 this one is not being sampled from an ensemble of systems.
 
-%\section{Homology/Co-Homology?}
-%
-%Forward and reverse
+See also: the method of moments.
+
+\section{Homology/Co-Homology?}
+
+...Forward and reverse
+
+
 
 %\section{Type inference?}
-%
 % Haskell can infer the result type of a function from its argument (forward), or the argument type from the result (backward)
 
 % Gaussian elimination? Euclids algorithm? Buchberger's algorithm?
@@ -1444,6 +1568,7 @@ this one is not being sampled from an ensemble of systems.
 % Does replica theory look at all like ensemble methods in machine learning (eg. boosting)... ?
 
 % Nerual networks look like renormalization group... so does RG do any ``backpropagation'' ?
+% \cite{Mehta2014}
 
 % Path integrals are famously ill-defined... eg. Feynman, Witten, Replica theory...
 %    -- is it possible that this is a manifestation of (Godelian) incompleteness ?
