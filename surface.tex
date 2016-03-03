@@ -693,6 +693,26 @@ $$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 
+\section{Markov processes}
+
+Given a sequence of random variables $x_1,...,x_n$
+the markov property is:
+$$
+    p(x_n|x_1,...,x_{n-1}) = p(x_n|x_{n-1}).
+$$
+Applied to a joint distribution we get:
+\begin{align*}
+    p(x_n,...,x_1) &= p(x_n|x_{n-1},...x_1) p(x_{n-1}|x_{n-2}...x_1)...p(x_1)\\
+                    &= p(x_n|x_{n-1}) p(x_{n-1}|x_{n-2})...p(x_1).
+\end{align*}
+Loosely, $p$ distributes multiplicatively over joints.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
 \section{Logic: cut-elimination}
 
 Natural deduction, Gentzen's sequent calculus..
