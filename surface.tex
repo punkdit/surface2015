@@ -75,8 +75,10 @@
 \maketitle
 
 
+\def\N{\mathbb N}
 \def\Z{\mathbb Z}
 \def\R{\mathbb R}
+\def\C{\mathbb C}
 \def\Expect{\mathbb E}
 \def\Ind{\mathbb I}
 \def\Complex{\mathbb{C}}
@@ -588,76 +590,6 @@ boundary element method: http://george-and-bem.ce.umn.edu/fundamental.html
 % Wave equation, Elliptic PDE's, Sobolev spaces...??? Elliptic PDE's represent
 % static sollutions (eg. laplace/poisson equation)..
 
-\section{Representing Compact Hausdorff spaces}
-
-
-There is a vast theory of representing topological spaces as
-algebraic objects, here we present one of the simplest such
-instances of this
-\cite{Nagata1985}.
-
-%https://books.google.com.au/books?id=DMLSBQAAQBAJ&pg=PA132&lpg=PA132&dq=compact+space+%22lattice+of+continuous+functions%22&source=bl&ots=t5g-GKJjma&sig=xfFhgg3SPhR72Xy9fONk_I3fZxQ&hl=en&sa=X&ved=0ahUKEwjK3OL2rpnKAhUG5KYKHVhvBDUQ6AEIQDAF#v=onepage&q=compact%20space%20%22lattice%20of%20continuous%20functions%22&f=false
-
-Let $X$ be a compact Hausdorff space.
-Let $C(X)$ be the set of real valued continuous functions on $X$.
-%This is a ring under pointwise addition and multiplication.
-This is a lattice under the pointwise meet and join operations inherited from $\R$.
-
-A \emph{prime ideal} of $C(X)$ is $\{x\in X:f(x)=0\}$ where $f:X\to \{0,1\}$
-is any lattice homomorphism. 
-The elements of the lattice $\{0, 1\}$ are also known as 
-``false'' and ``true''.
-
-{\bf Lemma.} A proper subset $J$ of $C(X)$ is a prime ideal
-iff it satisfies the following:\newline
-\ \ \ (1) $f\in J$ and $g\in J$ implies $f\vee g \in J,$ \newline
-\ \ \ (2) $f\in J$ and $g<f$ implies $g\in J,$ \newline
-\ \ \ (3) $f\notin J$ and $g\notin J$ implies $f\wedge g\notin J.$
-\qed
-
-We can associate points $x\in X$ to prime ideals $P$ as follows:
-if $f\in P$ and $g(x)< f(x)$ then $g\in P.$
-
-Given a point $x\in X$ we can build a prime ideal associated to $x$
-as $\{f\in C(X) | f(x)<a\}$ where $a$ is any constant in $\R.$
-
-{\bf Lemma.} Any prime ideal $P$ is associated with exactly one point $x\in X.$
-\qed
-
-To make the association one-to-one we
-define an equivelance relation on prime ideals:
-$P_1\sim P_2$ when $P_1\cap P_2$ contains a prime ideal.
-
-{\bf Lemma.} Two prime ideals $P_1$ and $P_2$ are associated with the same
-point iff $P_1\sim P_2.$
-\qed
-
-The collection of isomorphism classes of prime ideals we denote $\Delta(X).$
-We also write $\Delta(x)$ for the isomorphism class associated with $x\in X.$
-These will be the points of a topological space, whose topology we
-define using the following closure operation.
-Let $B\subset\Delta(X)$ and $q\in\Delta(X).$
-Then $q\in\bar{B}$ iff 
-for each $q'\in B$
-we can choose a prime ideal $P(q')$ such that
-$\cap_{q'\in B} P(q')$ is non-empty and contained in some other prime ideal $P\in q.$
-
-%{\bf Lemma.} This closure operation defined on subsets of $\Delta(X)$ is the
-%same as the closure operation on $X$ 
-{\bf Lemma.} Let $A\subset X$ and $x\in X$. Then $x\in\bar{A}$ iff
-$\Delta(x)\in\overline{\Delta(a)}$ in $\Delta(X).$
-\qed
-
-This shows that $\Delta(X)$ is homeomorphic to the original space $X.$
-Furthermore, since the space $\Delta(X)$
-was defined using only the lattice operations of $C(X)$ we have that
-any two compact Hausdorff spaces $X$ and $Y$ are homeomorphic iff $C(X)$ and
-$C(Y)$ are isomorphic as lattices.
-
-% Notice: these prime ideals look alot like Green's functions, or
-% the ``seed'' functions used to drive Dijkstra's algorithm.
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -667,11 +599,34 @@ $C(Y)$ are isomorphic as lattices.
 
 Differentiation distributes
 multiplicatively over function
-composition.
+composition:
+$$
+    D(f\circ g)(x) = Df(g(x))\cdot Dg(x)
+$$
 
 forward and reverse...
 
-%\input{autodiff.tex}
+\input{autodiff.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\section{Linear recurrence relations}
+
+The fibonacci series:
+$$
+    a_{n+2} = a_n + a_{n+1}
+$$
+Changing the notation somewhat, for any natural number $n$
+we define the successor of $n$ as $Sn := n+1.$
+We rewrite the recurrence relation in terms of a function $f:\N\to\R$
+$$
+    f(SSn) = f(Sn) + f(n).
+$$
+Pushing the analogy, and squinting a bit, this
+could be called ``$f$ distributes linearly over $S.$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -945,9 +900,85 @@ this one is not being sampled from an ensemble of systems.
 
 See also: the method of moments.
 
-\section{Homology/Co-Homology?}
+%\section{Homology/Co-Homology?}
+%
+%...Forward and reverse
+% how is homology a path integral? is euler characteristic a path integral?
 
-...Forward and reverse
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\section{Representing Compact Hausdorff spaces}
+
+
+There is a vast theory of representing topological spaces as
+algebraic objects, here we present one of the simplest such
+instances of this
+\cite{Nagata1985}.
+
+%https://books.google.com.au/books?id=DMLSBQAAQBAJ&pg=PA132&lpg=PA132&dq=compact+space+%22lattice+of+continuous+functions%22&source=bl&ots=t5g-GKJjma&sig=xfFhgg3SPhR72Xy9fONk_I3fZxQ&hl=en&sa=X&ved=0ahUKEwjK3OL2rpnKAhUG5KYKHVhvBDUQ6AEIQDAF#v=onepage&q=compact%20space%20%22lattice%20of%20continuous%20functions%22&f=false
+
+Let $X$ be a compact Hausdorff space.
+Let $C(X)$ be the set of real valued continuous functions on $X$.
+%This is a ring under pointwise addition and multiplication.
+This is a lattice under the pointwise meet and join operations inherited from $\R$.
+
+A \emph{prime ideal} of $C(X)$ is $\{x\in X:f(x)=0\}$ where $f:X\to \{0,1\}$
+is any lattice homomorphism. 
+The elements of the lattice $\{0, 1\}$ are also known as 
+``false'' and ``true''.
+
+{\bf Lemma.} A proper subset $J$ of $C(X)$ is a prime ideal
+iff it satisfies the following:\newline
+\ \ \ (1) $f\in J$ and $g\in J$ implies $f\vee g \in J,$ \newline
+\ \ \ (2) $f\in J$ and $g<f$ implies $g\in J,$ \newline
+\ \ \ (3) $f\notin J$ and $g\notin J$ implies $f\wedge g\notin J.$
+\qed
+
+We can associate points $x\in X$ to prime ideals $P$ as follows:
+if $f\in P$ and $g(x)< f(x)$ then $g\in P.$
+
+Given a point $x\in X$ we can build a prime ideal associated to $x$
+as $\{f\in C(X) | f(x)<a\}$ where $a$ is any constant in $\R.$
+
+{\bf Lemma.} Any prime ideal $P$ is associated with exactly one point $x\in X.$
+\qed
+
+To make the association one-to-one we
+define an equivelance relation on prime ideals:
+$P_1\sim P_2$ when $P_1\cap P_2$ contains a prime ideal.
+
+{\bf Lemma.} Two prime ideals $P_1$ and $P_2$ are associated with the same
+point iff $P_1\sim P_2.$
+\qed
+
+The collection of isomorphism classes of prime ideals we denote $\Delta(X).$
+We also write $\Delta(x)$ for the isomorphism class associated with $x\in X.$
+These will be the points of a topological space, whose topology we
+define using the following closure operation.
+Let $B\subset\Delta(X)$ and $q\in\Delta(X).$
+Then $q\in\bar{B}$ iff 
+for each $q'\in B$
+we can choose a prime ideal $P(q')$ such that
+$\cap_{q'\in B} P(q')$ is non-empty and contained in some other prime ideal $P\in q.$
+
+%{\bf Lemma.} This closure operation defined on subsets of $\Delta(X)$ is the
+%same as the closure operation on $X$ 
+{\bf Lemma.} Let $A\subset X$ and $x\in X$. Then $x\in\bar{A}$ iff
+$\Delta(x)\in\overline{\Delta(a)}$ in $\Delta(X).$
+\qed
+
+This shows that $\Delta(X)$ is homeomorphic to the original space $X.$
+Furthermore, since the space $\Delta(X)$
+was defined using only the lattice operations of $C(X)$ we have that
+any two compact Hausdorff spaces $X$ and $Y$ are homeomorphic iff $C(X)$ and
+$C(Y)$ are isomorphic as lattices.
+
+% Notice: these prime ideals look alot like Green's functions, or
+% the ``seed'' functions used to drive Dijkstra's algorithm.
 
 
 
