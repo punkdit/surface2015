@@ -668,7 +668,33 @@ Convex functions are ...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 
-\section{Distributive lattices}
+\section{Logarithms}
+
+The logarithm distributes additively over multiplication: 
+$$\log(ab) = \log(a) + \log(b).$$
+At least for positive real numbers.
+
+We define a deformed addition operation on $\R^{+}:$
+$$
+    a\oplus_h b := h\log \Bigl( \exp\frac{a}{h} +\exp\frac{b}{h} \Bigr)
+$$
+for $h>0.$
+Then we have:
+$$
+    \max(a, b) = \lim_{h\to 0^+} a\oplus_h b.
+$$
+Defining $f_h(a) := h\log(a)$ for clarity, we then
+have a distributivity:
+$$
+    f_h(a+b) = f_h(a) \oplus_h f_h(b).
+$$
+So, as well as $f_h(ab) = f_h(a) + f_h(b)$ we
+get $f_h$ distributes over addition in the limit as:
+$$
+    \lim_{h\to 0^+} f_h(a+b) = \max(f_h(a), f_h(b)).
+$$
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1019,6 +1045,8 @@ $C(Y)$ are isomorphic as lattices.
 % the ``seed'' functions used to drive Dijkstra's algorithm.
 
 
+%\section{Distributive lattices}
+% why ?
 
 %\section{Type inference?}
 % Haskell can infer the result type of a function from its argument (forward), or the argument type from the result (backward)
