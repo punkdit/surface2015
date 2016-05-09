@@ -230,7 +230,6 @@ the permutation group $S_n$ when $n<1$, particularly the limit as $n$ goes to ze
 Recursive domain equations... least fixed points in POSETs (DCPOs..)
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -609,9 +608,24 @@ $$
     D(f\circ g)(x) = Df(g(x))\cdot Dg(x)
 $$
 
+The proof of this relies on differentiable functions being linear (affine) to first order:
+$$
+    g(x+h) \simeq g(x) + hDg(x), \ \ \mbox{for}\ \ h \simeq 0.
+$$
+This is a kind of distributivity, albeit with the second summand becoming
+somewhat mangled in the right-hand side.
+In detail:
+\begin{align*}
+    D(f\circ g)(x)  &= \lim_{h\to 0} \frac{ f(g(x+h)) - f(g(x)) } {h}  \\
+                    &= \lim_{h\to 0} \frac{ f(g(x) + hDg(x)) - f(g(x)) } {h}  \\
+                    &= \lim_{h\to 0} \Bigl[\frac{ f(g(x) + hDg(x)) - f(g(x)) } {hDg(x)}\Bigr] Dg(x) \ \ \mbox{where}\ \  Dg(x)\ne 0\\
+                    &= Df(g(x))\cdot Dg(x) \\
+\end{align*}
+
+
 forward and reverse...
 
-\input{autodiff.tex}
+%\input{autodiff.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -646,6 +660,45 @@ combinations:
 $$
 x + \frac{a+b}{2} = \frac{(x+a) + (x+b)}{2}.
 $$
+
+The functions that preserve convex combinations
+are exactly the affine functions.
+
+What are the functions that preserve convexity of sets? Continuous functions?
+
+Convex functions are ...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\section{Logarithms}
+
+The logarithm distributes additively over multiplication: 
+$$\log(ab) = \log(a) + \log(b).$$
+At least for positive real numbers.
+
+We define a deformed addition operation on $\R^{+}:$
+$$
+    a\oplus_h b := h\log \Bigl( \exp\frac{a}{h} +\exp\frac{b}{h} \Bigr)
+$$
+for $h>0.$
+Then we have:
+$$
+    \max(a, b) = \lim_{h\to 0^+} a\oplus_h b.
+$$
+Defining $f_h(a) := h\log(a)$ for clarity, we then
+have a distributivity:
+$$
+    f_h(a+b) = f_h(a) \oplus_h f_h(b).
+$$
+So, as well as $f_h(ab) = f_h(a) + f_h(b)$ we
+get $f_h$ distributes over addition in the limit as:
+$$
+    \lim_{h\to 0^+} f_h(a+b) = \max(f_h(a), f_h(b)).
+$$
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -910,6 +963,17 @@ See also: the method of moments.
 %...Forward and reverse
 % how is homology a path integral? is euler characteristic a path integral?
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\section{Cartesian closed categories}
+
+In a cartesian closed category with coproducts, 
+the product distributes over the coproduct, and exponentiation distributes over the product.
+% https://golem.ph.utexas.edu/category/2016/03/category_theory_course.html#more
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -986,6 +1050,8 @@ $C(Y)$ are isomorphic as lattices.
 % the ``seed'' functions used to drive Dijkstra's algorithm.
 
 
+%\section{Distributive lattices}
+% why ?
 
 %\section{Type inference?}
 % Haskell can infer the result type of a function from its argument (forward), or the argument type from the result (backward)
