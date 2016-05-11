@@ -2,6 +2,7 @@
 
 out: surface
 	open surface.pdf 
+	cp surface.pdf ~/home/Dropbox
 
 surface: surface.tex refs.bib
 	xelatex surface.tex
