@@ -599,6 +599,11 @@ boundary element method: http://george-and-bem.ce.umn.edu/fundamental.html
 
 \section{Automatic differentiation}
 
+Writing the operation of differentiation as $D$
+we note the chain rule:
+$$
+    D(f\circ g)(x) = Df(g(x))\cdot Dg(x).
+$$
 Differentiation distributes
 multiplicatively over function
 composition:
@@ -622,6 +627,7 @@ In detail:
 
 
 forward and reverse...
+\cite{Colah2015}
 
 \cite{Griewank2012}
 
@@ -1066,6 +1072,16 @@ $C(Y)$ are isomorphic as lattices.
 % Notice: these prime ideals look alot like Green's functions, or
 % the ``seed'' functions used to drive Dijkstra's algorithm.
 
+\section{Shelves}
+
+A shelf is a set with a self-distributive operation:
+$$
+a \triangleright (b \triangleright c) = (a\triangleright b)\triangleright(a\triangleright c).
+$$
+This can be seen as equivelant to the Yang-Baxter equation:
+$$\sigma_1 \sigma_2 \sigma_1 = \sigma_2 \sigma_1 \sigma_2.$$
+Also the Jacobi identity fits here.
+\cite{Crans2004,Dehornoy2012}.
 
 %\section{Distributive lattices}
 % why ?
@@ -1116,6 +1132,7 @@ $C(Y)$ are isomorphic as lattices.
 %    https://en.wikipedia.org/wiki/It%C3%B4%27s_lemma
 %    https://en.wikipedia.org/wiki/Martingale_(probability_theory)
 
+<<<<<<< HEAD
 % Yang-Baxter: $$\sigma_1 ( \sigma_2 \sigma_1 ) = \sigma_2 ( \sigma_1 \sigma_2 )$$
 % ?
 
@@ -1124,6 +1141,8 @@ $C(Y)$ are isomorphic as lattices.
 %ALISSA S. CRANS, SUJOY MUKHERJEE, AND JOZEF H. PRZYTYCKI 
 
 
+=======
+>>>>>>> 0d2039a2ce9702a34d756f9a51797e2e5196dd93
 
 \bibliography{refs}{}
 \bibliographystyle{abbrv}
