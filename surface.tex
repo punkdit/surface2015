@@ -86,6 +86,9 @@
 \def\GL{\mathrm{GL}}
 \def\half{\frac{1}{2}}
 \def\todo#1{\emph{(XXX #1 XXX)}}
+\def\tensor{\otimes}
+\def\tr{\mbox{tr}}
+\def\det{\mbox{det}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -244,6 +247,50 @@ But note that if $A$ and $B$ overlap we need to modify this
 as
 $$\mu(A\cup B) = \mu(A) + \mu(B) - \mu(A\cap B).$$
 
+The entropy of probability distributions behaves similarly:
+$H(p\tensor q) = H(p) + H(q).$
+And when the two distributions are marginals of some other distribution
+$H(pq) = H(p) + H(q) - I(p:q)$
+where $I(p:q)$ is defined to make this equation hold and is
+understood as the ``overlap of entropy'' also known as mutual information.
+
+Euler characteristic works like this aswell:
+$$
+\chi(A\cup B) = \chi(A) + \chi(B) - \chi(A\cap B)
+$$
+
+As we decompose our object into more and more pieces,
+we find that size gives an alternating sum:
+$$
+\mu(A\cup B\cup C) = \mu(A) + \mu(B) + \mu(C) 
+    - \mu(A\cap B) - \mu(A\cap C) - \mu(B\cap C)
+    + \mu(A\cap B \cap C)
+$$
+
+Abstracting this to a valuation on a lattice:
+\cite{Klain1997}.
+
+In the case of Euler characteristic of a three dimensional polyhedron
+we write this as 
+$\chi = |\mbox{Faces}| - |\mbox{Edges}| + |\mbox{Vertices}|$
+and indeed, as edges are the intersection
+of two faces, and vertices intersection of two lines,
+we have a simple way to understand this definition of size.
+These ideas are generalized by Leinster \cite{Leinster2008,Leinster2013,Leinster2014}.
+From \cite{Leinster2014}: convex subsets of $\R^n$ have
+a different kind of size for each dimension from $0$ to $n,$
+these are the \emph{intrinsic volumes} \cite{Klain1997}.
+For $n=2$ this is Euler characteristic, perimeter, area.
+
+In a slightly different direction,
+taking the size of a matrix:
+\begin{align*}
+    \tr(A+B) &= \tr(A) + \tr(B) \\
+    \det(AB) &= \det(A) \cdot \det(B).
+\end{align*}
+
+
+Helly's theorem \cite{Klain1997}, \cite{Ghrist2014}.
 
 
 
