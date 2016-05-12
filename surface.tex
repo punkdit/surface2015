@@ -60,7 +60,8 @@
 %\title{Path-integrals are everywhere}
 %\title{The meaning is in the arrows between objects, not in the objects themselves}
 %\title{Design patterns in message passing}
-\title{The Physics of Meaning}
+\title{Size, distributivity, homomorphism:\\
+    when the surface betrays what lies beneath}
 
 \author{Simon Burton}
 %\affiliation{Centre for Engineered Quantum Systems, School of Physics, The University of Sydney}
@@ -228,6 +229,22 @@ Apparently, Parisi was originally motivated by considering
 the permutation group $S_n$ when $n<1$, particularly the limit as $n$ goes to zero.
 
 Recursive domain equations... least fixed points in POSETs (DCPOs..)
+
+
+\section{Size}
+
+To measure the size of some object, we would
+expect to be able to measure the size of its pieces
+and combine those. 
+This property is a good definition of what we
+mean by ``size''. And it is also a kind of
+distributivity: 
+$\mu(A\cup B) = \mu(A) + \mu(B).$
+But note that if $A$ and $B$ overlap we need to modify this
+as
+$$\mu(A\cup B) = \mu(A) + \mu(B) - \mu(A\cap B).$$
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -624,14 +641,13 @@ In detail:
                     &= \lim_{h\to 0} \Bigl[\frac{ f(g(x) + hDg(x)) - f(g(x)) } {hDg(x)}\Bigr] Dg(x) \ \ \mbox{where}\ \  Dg(x)\ne 0\\
                     &= Df(g(x))\cdot Dg(x) \\
 \end{align*}
-
+So the proof of the chain rule comes from (relies on)
+the regular distributivity in $\R.$
 
 forward and reverse...
 \cite{Colah2015}
 
 \cite{Griewank2012}
-
-% http://colah.github.io/posts/2015-08-Backprop/
 
 %\input{autodiff.tex}
 
@@ -653,7 +669,7 @@ $$
     f(SSn) = f(Sn) + f(n).
 $$
 Pushing the analogy, and squinting a bit, this
-could be called ``$f$ distributes linearly over $S.$
+could be called ``$f$ distributes linearly over $S.$''
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -727,21 +743,6 @@ Applied to a joint distribution we get:
                     &= p(x_n|x_{n-1}) p(x_{n-1}|x_{n-2})...p(x_1).
 \end{align*}
 Loosely, $p$ distributes multiplicatively over joints.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-
-\section{Size}
-
-To measure the size of some object, we would
-expect to be able to measure the size of its pieces
-and combine those. 
-This property is a good definition of what we
-mean by ``size''. And it is also a kind of
-distributivity: $\mu(A\cup B) = \mu(A) + \mu(B).$
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1083,6 +1084,10 @@ $$\sigma_1 \sigma_2 \sigma_1 = \sigma_2 \sigma_1 \sigma_2.$$
 Also the Jacobi identity fits here.
 \cite{Crans2004,Dehornoy2012}.
 
+%HOMOLOGY OF ASSOCIATIVE SHELVES
+%ALISSA S. CRANS, SUJOY MUKHERJEE, AND JOZEF H. PRZYTYCKI 
+
+
 %\section{Distributive lattices}
 % why ?
 
@@ -1132,17 +1137,7 @@ Also the Jacobi identity fits here.
 %    https://en.wikipedia.org/wiki/It%C3%B4%27s_lemma
 %    https://en.wikipedia.org/wiki/Martingale_(probability_theory)
 
-<<<<<<< HEAD
-% Yang-Baxter: $$\sigma_1 ( \sigma_2 \sigma_1 ) = \sigma_2 ( \sigma_1 \sigma_2 )$$
-% ?
 
-% A shelf is self-distributive: a*(b*c) = (a*b)*(a*c)
-%HOMOLOGY OF ASSOCIATIVE SHELVES
-%ALISSA S. CRANS, SUJOY MUKHERJEE, AND JOZEF H. PRZYTYCKI 
-
-
-=======
->>>>>>> 0d2039a2ce9702a34d756f9a51797e2e5196dd93
 
 \bibliography{refs}{}
 \bibliographystyle{abbrv}
