@@ -26,6 +26,7 @@
 \usepackage{amsmath}
 \usepackage{color}
 \usepackage{natbib}
+\usepackage{tikz-cd}
 %\usepackage{cite}
 
 \RequirePackage{amsmath}
@@ -80,6 +81,7 @@
 \def\Z{\mathbb Z}
 \def\R{\mathbb R}
 \def\C{\mathbb C}
+\def\Sets{\mathbb B}
 \def\Expect{\mathbb E}
 \def\Ind{\mathbb I}
 \def\Complex{\mathbb{C}}
@@ -627,25 +629,12 @@ Eikonal equation
 
 Bellman's equation ---> Hamilton-Jacobi equations ---> Schrodinger (wave) Equation
 
-% Recursive domain equations
-% Combinatorial species (monads?)
-
 Maximising buying and selling a price function $f:[0,1]\to \R$:
     The solution is to buy the local minima and sell the
     local maxima. Can get this via a test function and
     integration by parts. This is a morse function, with
     critical points being the trades.
     Is this also the dynamic programming solution?
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-
-\section{Monads}
-
-The distribution monad relies on the self-distributivity of convexity.
-See \cite{Jacobs2012} section 5.1.3.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1056,6 +1045,61 @@ the product distributes over the coproduct, and exponentiation distributes over 
 % https://golem.ph.utexas.edu/category/2016/03/category_theory_course.html#more
 
 
+\section{Species}
+
+A species of structures \cite{Bergeron1998} is a functor $F:\Sets\to\Sets,$ 
+where $\Sets$ is the category of finite sets and bijections.
+In more detail, for every finite set $U$ we have a finite set $F(U),$
+and for a bijection we have a transport map $F(\sigma):F(U)\to F(V).$
+The key is that $F$ respects composition of bijections:
+for $\sigma:U\to V$ and $\tau:V\to W$ we have
+$F(\tau \sigma) = F(\tau) F(\sigma).$
+
+% Species give a power series: \sum f(n) x^n
+% Wave propagation looks like this \sum f(w) e^{iw \theta}
+%   -- is species a kind of wavefront?
+% Recursive domain equations
+% Combinatorial species (monads?)
+
+\section{Coalgebra}
+
+Given an arbitrary category $\C$ and functor $F:\C\to \C$
+an F-coalgebra \cite{Jacobs2012}
+is an object $X\in \C$ and a morphism $c:X\to F(X).$
+A homomorphism of F-coalgebras $c:X\to F(X)$ to $d:Y\to F(Y)$
+is a map $f:X\to Y$ such that the relevant square commutes: $df = F(f)c.$
+
+We have the forgetful functor that sends $c:X\to F(X)$ to $X$ and
+$f:X\to Y$ to $f.$
+
+\section{Monad}
+
+A \emph{monad} on a category $\C$ is an endofunctor $T:\C\to \C$
+and two natural transformations,
+a unit $\eta:1_\C\to T$ and a multiplication $\mu:T^2\to T.$
+
+\[
+\begin{tikzcd}
+T^3 \arrow{r}{T\mu} \arrow[swap]{d}{\mu T} & T^2 \arrow{d}{\mu} & 
+T \arrow{r}{\eta T}\arrow{dr}{=} & T^2 \arrow{d}{\mu} & \arrow[swap]{l}{T\eta}\arrow{dl}{=} T \\
+T^2 \arrow{r}{\mu} & T & 
+& T & 
+\end{tikzcd}
+\]
+
+%\[
+%\begin{tikzcd}
+%A \arrow{r}{f} \arrow[swap]{dr}{g\circ f} & B \arrow{d}{g} \\
+%& C
+%\end{tikzcd}
+%\]
+
+See \cite{Mac1978}, \cite{Jacobs2012}.
+
+The distribution monad relies on the self-distributivity of convexity.
+See \cite{Jacobs2012} section 5.1.3.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1177,11 +1221,6 @@ Also the Jacobi identity fits here.
 % Is Action (kinetic-potential energy) an Euler characteristic?
 %    -- kinetic energy is "1-dimensional"
 %    -- potential energy is "0-dimensional"
-
-% Species give a power series: \sum f(n) x^n
-% Wave propagation looks like this \sum f(w) e^{iw \theta}
-%   -- is species a kind of wavefront?
-%
 
 % Historical: 
 % https://en.wikipedia.org/wiki/Project_Cybersyn
