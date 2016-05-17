@@ -10,3 +10,6 @@ surface: surface.tex refs.bib
 	xelatex surface.tex
 	xelatex surface.tex
 
+slides: slides.tex 
+	xelatex slides.tex
+
