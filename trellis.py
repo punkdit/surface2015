@@ -357,3 +357,62 @@ for frame in range(5):
   c.writePDFfile("pic-minpath-%d.pdf"%frame)
 
 
+
+#############################################################################
+#
+#
+
+c = canvas.canvas()
+
+
+w = 2.0
+h = 1.0
+
+a = {0:1, 1:1}
+coords = {}
+
+idx = 0
+for i in range(5):
+    for j in range(2):
+        x = j*w
+        y = i*h + 0.5*j*h
+        coords[idx] = (x, y)
+        idx += 1
+
+def conv(alpha, (x0, y0), (x1, y1)):
+    return (1.0-alpha)*x0+alpha*x1, (1.0-alpha)*y0+alpha*y1
+
+
+for idx in range(8):
+    x0, y0 = coords[idx]
+    x1, y1 = coords[idx+1]
+    x2, y2 = coords[idx+2]
+    x1, y1 = conv(0.85, (x0, y0), (x1, y1))
+    x2, y2 = conv(0.70, (x0, y0), (x2, y2))
+
+    if idx>0:
+        c.stroke(path.line(x0, y0, x1, y1), [deco.earrow()])
+    c.stroke(path.line(x0, y0, x2, y2), [deco.earrow()])
+
+    
+for idx in range(8):
+    x, y = coords[idx]
+
+    p = path.circle(x, y, 0.3)
+    c.fill(p, [white])
+    c.stroke(p)
+
+    value = a.get(idx)
+    if value is None:
+        value = a[idx-1] + a[idx-2]
+    a[idx] = value
+    c.text(x, y, "$%d$"%value, center)
+
+c.text(0.5*w, 4.3*h, "...", center)
+
+
+
+c.writePDFfile("pic-fibonacci.pdf")
+
+
+
