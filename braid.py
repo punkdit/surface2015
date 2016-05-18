@@ -229,249 +229,190 @@ def timeslice(x, y, transparency=0., label="", W=3):
 
 
 
-#############################################################################
-#
-#
+
+
+
+
+
+
+# hole spacing
+w = 1.0
+W = 3*w
+
+# total hight
+H = 2.8
+
+my = 0.25
+x0, y0 = 0.3*W, 0.3*H
+x1, y1 = x0+0.3*W, y0+my*0.3*W
+y0, y1 = -.3, .3
+
+N = 100
+
+def cos_up(theta): # 0 -> 1 -> 0
+    return 0.5 - 0.5*cos(theta)
+
+def cos_dn(theta): # 0 -> -1 -> 0
+    return -cos_up(theta)
 
 
 c = canvas.canvas()
+for frame in range(2):
 
-w = 2.0
-h = 2.0
+    X = 5.5*w*frame
 
-ns = [2, 3, 3, 2]
-
-
-for i in range(len(ns)):
-
-    n = ns[i]
-    x0 = i*w
-    x1 = (i+1)*w
-    for j0 in range(n):
-        y0 = j0*h - h*(n-1)/2.
-        c.fill(path.circle(x0, y0, 0.1))
+    ps0 = []
+    ps1 = []
+    ps2 = []
+    for i in range(N+1):
+        r = 1.*i/N
+        y = r*H
+        #r = bump(r)
     
-        if i==len(ns)-1:
-            continue
+        x = 2*w*cos_up(pi*r)
+        ps0.append((x, y))
+    
+        if frame == 0:
+            x = w + cos_dn(2*pi*r)
+        else:
+            x = w + cos_up(2*pi*r)
+        ps1.append((x, y))
+    
+        x = 2*w + 2*w*cos_dn(pi*r)
+        ps2.append((x, y))
+    
+    tr = [trafo.translate(X, 0.)]
+    
+#    if frame == 0:
+#        c.text(-4.0*w, 0.5*H, r"$\sigma_i\sigma_{i+1}\sigma_i =$", tr)
+#    else:
+#        c.text(-3.0*w, 0.5*H, r"$=$", tr)
+#        c.text(+4.5*w, 0.5*H, r"$=\sigma_{i+1}\sigma_i\sigma_{i+1}$", tr)
+    if frame:
+        c.text(-2.0*w, 0.5*H, r"$=$", tr)
 
-        n1 = ns[i+1]
-        for j1 in range(n1):
-            y1 = j1*h - h*(n1-1)/2.
+#    #c.text(-1.*w, 0.5*H, "$...$", tr)
+#    #c.text(3.*w, 0.5*H, "$...$", tr)
+#    c.text(-1.*w, -0.6, "$...$", tr)
+#    c.text(2.7*w, -0.6, "$...$", tr)
+#    for i in range(3):
+#        c.text(i*w, -0.6, "$i$ $i+1$ $i+2$".split()[i], center+tr)
+    
+    timeslice(X, 0., 0., W=3*w)
+    
+    for ps in draw(ps0, [ps1, ps2], [True, True]):
+        dopath(ps, st_Thick+tr)
+    
+    for ps in draw(ps1, [ps0, ps2], [frame, not frame]):
+        dopath(ps, st_Thick+tr)
+    
+    for ps in draw(ps2, [ps0, ps1], [False, False]):
+        dopath(ps, st_Thick+tr)
+    
+    timeslice(X, H, 0.3, W=3*w)
+    
+    for i in range(3):
+        c.fill(path.circle(i*w, 0., 0.06), tr)
+        c.fill(path.circle(i*w, H, 0.06), tr)
 
-            c.stroke(path.line(x0, y0, x1, y1))
+
+c.writePDFfile("pic-braid.pdf")
 
 
-
-c.writePDFfile("pic-trellis.pdf")
-
-
-#############################################################################
+###############################################################################
 #
 #
 
-seed(0)
-
-
 w = 2.0
-h = 2.0
 
-ns = [2, 3, 3, 2]
+c = canvas.canvas()
+for frame in range(2):
 
+    X = 3.0*w*frame
 
-weights = {}
-weights = {
-    (0, 1, 1): 2, (2, 2, 0): 4, (2, 1, 1): 4, (2, 1, 0): 0, (0, 0, 2): 2, (1, 1, 0): 2, (0, 1, 2): 2, (2, 0, 1): 4, (0, 0, 1): 3, (1, 2, 1): 3, (1, 0, 1): 1, (1, 1, 1): 4, (1, 0, 0): 3, (1, 2, 0): 1, (0, 0, 0): 4, (2, 0, 0): 1, (1, 2, 2): 3, (0, 1, 0): 1, (1, 1, 2): 2, (1, 0, 2): 2, (2, 2, 1): 1}
-
-mweights = {
-    (0,0):0, (0,1):0,
-    (1,0):1, (1,1):2, (1, 2):2,
-    (2,0):3, (2,1):2, (2, 2):3,
-    (3,0):2, (3,1):4,
-}
-
-#for i in range(1, len(ns)):
-#    n0 = ns[i-1]
-#    n1 = ns[i]
-#    for j0 in range(n0):
-#        w = weights[i-1, j0, j1]
-
-
-for frame in range(5):
-
-  c = canvas.canvas()
-  for i in range(len(ns)):
-
-    n = ns[i]
-    x0 = i*w
-    x1 = (i+1)*w
-
-    if i+1 == frame:
-        c.stroke(path.line(x0, -1.2*h, x0, 1.2*h), st_dashed)
-
-    for j0 in range(n):
-        y0 = j0*h - h*(n-1)/2.
-
-        c.fill(path.circle(x0, y0, 0.1))
+    ps0 = []
+    ps1 = []
+    ps2 = []
+    for i in range(N+1):
+        r = 1.*i/N
+        y = r*H
+        #r = bump(r)
     
-        if i==len(ns)-1:
-            continue
+        x = 2*w*cos_up(pi*r)
+        ps0.append((x, y))
+    
+        if frame == 0:
+            x = w + cos_dn(2*pi*r)
+        else:
+            x = w + cos_up(2*pi*r)
+        ps1.append((x, y))
+    
+        x = 2*w + 2*w*cos_dn(pi*r)
+        ps2.append((x, y))
+    
+    tr = [trafo.translate(X, 0.)]
+    
+    if frame:
+        c.text(-0.5*w, 0.5*H, r"$=$", tr)
 
-        n1 = ns[i+1]
-        for j1 in range(n1):
-            y1 = j1*h - h*(n1-1)/2.
-
-            alpha = 0.95
-            x11 = (1-alpha)*x0 + alpha*x1
-            y11 = (1-alpha)*y0 + alpha*y1
-            c.stroke(path.line(x0, y0, x11, y11), [deco.earrow()])
-
-            alpha = 0.25
-            x = (1-alpha)*x0 + alpha*x1
-            y = (1-alpha)*y0 + alpha*y1
-            #weight = randint(0, 4)
-            #weights[i, j0, j1] = weight
-
-            R = 0.17
-            c.fill(path.circle(x, y, R), [white])
-            c.stroke(path.circle(x, y, R) )
-            c.text(x, y, "$%d$"%weights[i, j0, j1], center)
-
-
-  for i in range(len(ns)):
-
-    n = ns[i]
-    x0 = i*w
-    x1 = (i+1)*w
-
-    for j0 in range(n):
-        y0 = j0*h - h*(n-1)/2.
-
-        if i < frame:
-            R = 0.34
-            p = path.rect(x0-0.5*R, y0-0.5*R, R, R)
-            c.fill(p, [white])
-            c.stroke(p)
-            c.text(x0, y0, "$%d$"%mweights[i, j0], center)
-
-
-  c.writePDFfile("pic-minpath-%d.pdf"%frame)
+    for i in range(3):
+        c.text(i*w, -0.3, "$x$ $y$ $z$".split()[i], center+tr)
+        if frame==0:
+          c.text(i*w, H + 0.3, 
+            r"$(x>y)>(x>z)$_$x>y$_$x$".replace(">", r"\triangleright ").split("_")[i], center+tr)
+        else:
+          c.text(i*w, H + 0.3, 
+            r"$x>(y>z)$_$x>y$_$x$".replace(">", r"\triangleright ").split("_")[i], center+tr)
+    
+    for ps in draw(ps0, [ps1, ps2], [True, True]):
+        dopath(ps, st_Thick+tr)
+    
+    for ps in draw(ps1, [ps0, ps2], [frame, not frame]):
+        dopath(ps, st_Thick+tr)
+    
+    for ps in draw(ps2, [ps0, ps1], [False, False]):
+        dopath(ps, st_Thick+tr)
+    
+    for i in range(3):
+        c.fill(path.circle(i*w, 0., 0.06), tr)
+        c.fill(path.circle(i*w, H, 0.06), tr)
 
 
+c.writePDFfile("pic-braid-shelf.pdf")
 
-#############################################################################
+###############################################################################
 #
 #
 
 c = canvas.canvas()
 
+w = 0.8
+h = 0.5
 
-w = 2.0
-h = 1.0
-
-a = {0:1, 1:1}
-coords = {}
-
-idx = 0
-for i in range(5):
-    for j in range(2):
-        x = j*w
-        y = i*h + 0.5*j*h
-        coords[idx] = (x, y)
-        idx += 1
-
-def conv(alpha, (x0, y0), (x1, y1)):
-    return (1.0-alpha)*x0+alpha*x1, (1.0-alpha)*y0+alpha*y1
-
-
-for idx in range(8):
-    x0, y0 = coords[idx]
-    x1, y1 = coords[idx+1]
-    x2, y2 = coords[idx+2]
-    x1, y1 = conv(0.85, (x0, y0), (x1, y1))
-    x2, y2 = conv(0.70, (x0, y0), (x2, y2))
-
-    if idx>0:
-        c.stroke(path.line(x0, y0, x1, y1), [deco.earrow()])
-    c.stroke(path.line(x0, y0, x2, y2), [deco.earrow()])
-
-    
-for idx in range(8):
-    x, y = coords[idx]
-
-    p = path.circle(x, y, 0.3)
+def box(x, y):
+    p = path.rect(x-0.5*w, y, 2*w, h)
     c.fill(p, [white])
     c.stroke(p)
-
-    value = a.get(idx)
-    if value is None:
-        value = a[idx-1] + a[idx-2]
-    a[idx] = value
-    c.text(x, y, "$%d$"%value, center)
-
-c.text(0.5*w, 4.3*h, "...", center)
+    c.text(x+0.5*w, y+0.5*h, "$R$", center)
 
 
+for frame in range(2):
 
-c.writePDFfile("pic-fibonacci.pdf")
+    X = 5.0*w*frame
+    tr = [trafo.translate(X, 0.)]
 
+    for i in range(3):
+        c.stroke(path.line(i*w, 0., i*w, 7*h), tr)
 
+    for j in range(3):
 
-#############################################################################
-#
-#
+        box(X + ((j+frame)%2)*w, 2*j*h+h)
 
-c = canvas.canvas()
-
-
-w, h = 2., 0.7
-
-def arrow(x0, y0, x1, y1):
-
-    x00, y00 = conv(0.1, (x0, y0), (x1, y1))
-    x11, y11 = conv(0.85, (x0, y0), (x1, y1))
-    c.stroke(path.line(x00, y00, x11, y11), [deco.earrow()])
-
-def node(x, y, label):
-    p = path.circle(x, y, 0.3)
-    c.fill(p, [white])
-    c.stroke(p)
-    c.text(x, y, label, center)
-
-arrow(0*w, 3*h, 1*w, 2*h)
-arrow(0*w, 1*h, 1*w, 2*h)
-arrow(1*w, 2*h, 2*w, 1*h)
-arrow(1*w, 0*h, 2*w, 1*h)
-
-node(0*w, 3*h, "$x_5$")
-node(0*w, 1*h, "$x_4$")
-node(1*w, 0*h, "$x_3$")
-node(1*w, 2*h, "$x_2$")
-node(2*w, 1*h, "$x_1$")
-
-c.writePDFfile("pic-belief.pdf")
+    if frame == 0:
+        c.text(3.5*w, 3.5*h, "$=$", center)
 
 
-
-#############################################################################
-#
-#
-
-c = canvas.canvas()
-
-arrow(0*w, 3*h, 1*w, 2*h)
-arrow(0*w, 1*h, 1*w, 2*h)
-arrow(1*w, 2*h, 2*w, 1*h)
-arrow(1*w, 0*h, 2*w, 1*h)
-arrow(0*w, -1*h, 1*w, 0*h)
-
-node(0*w, 3*h, "$x$")
-node(0*w, 1*h, "$x$")
-node(1*w, 0*h, r"$\sin$")
-node(0*w, -1*h, r"$x$")
-node(1*w, 2*h, r"$\times$")
-node(2*w, 1*h, r"$\times$")
+c.writePDFfile("pic-yb.pdf")
 
 
-
-c.writePDFfile("pic-diff.pdf")
 

@@ -53,6 +53,14 @@
 %\def\point {\vskip 5pt $\bigodot$\ \ }
 \def\point {\vskip 5pt $\hookrightarrow$\ \ }
 
+\def\N{\mathbb N}
+\def\Z{\mathbb Z}
+\def\R{\mathbb R}
+\def\C{\mathbb C}
+\def\tr{\triangleright}
+\def\tensor{\otimes}
+
+
 \begin{document}
 
 \large
@@ -136,6 +144,43 @@ $$
 
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\heading{Belief propagation}
+
+\vsp
+Joint probabilities factor as:
+\begin{align*}
+    p(x_1, x_2, x_3, x_4, x_5) = \ & p(x_1 | x_2, x_3, x_4, x_5)  p(x_2 | x_3, x_4, x_5) \\
+        & \ \ \ p(x_3 | x_4, x_5) p( x_4 | x_5) p( x_5) 
+\end{align*}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Belief propagation}
+
+\centerline{\includegraphics[]{pic-belief.pdf}}
+
+\begin{align*}
+    p(x_1 | x_2, x_3, x_4, x_5) &= p(x_1 | x_2, x_3) \\
+    p(x_2 | x_3, x_4, x_5) &= p(x_2 | x_4, x_5)  \\
+    p(x_3 | x_4, x_5)  &= p(x_3) \\
+    p(x_4 | x_5) &= p(x_4)
+\end{align*}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{align*}
+%    p(x_1, x_2, x_3, x_4, x_5) = p(x_1 | x_2, x_3)  p(x_2 | x_4, x_5) p(x_3) p(x_4) p( x_5) 
+%\end{align*}
+\heading{Belief propagation}
+\centerline{\includegraphics[]{pic-belief.pdf}}
+\begin{align*}
+    p(x_1) &= \sum_{x_1...x_5} p(x_1, x_2, x_3, x_4, x_5) \\
+    &= \sum_{x_1...x_5} p(x_1 | x_2, x_3)  p(x_2 | x_4, x_5) p(x_3) p(x_4) p( x_5)  \\
+    &= \sum_{x_1x_2x_3} p(x_1 | x_2, x_3)  p(x_3) \sum_{x_4 x_5} p(x_2 | x_4, x_5) p(x_4) p( x_5) 
+\end{align*}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \heading{Linear recurrence relations}
 
 \vsp
@@ -143,7 +188,6 @@ $$
 $$
     a_{n+2} = a_{n+1} + a_n
 $$
-
 
 
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -159,9 +203,150 @@ $$
     f(SSn) = f(Sn) + f(n).
 $$
 
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Perturbation theory}
+
+\begin{align*}
+    f(x) &= x^2 \sin(x) \\
+    f'(x) &= 2x\cos(x) + x^2 \cos(x)
+\end{align*}
+
+Compute to first order:
+\begin{align*}
+    f(x+\varepsilon) &= (x+\varepsilon)^2 \sin(x+\varepsilon)
+\end{align*}
+with $\varepsilon^2 = 0.$
 
 
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Automatic differentiation}
+
+\centerline{\includegraphics[]{pic-diff.pdf}}
+
+Chain rule:
+\begin{align*}
+    D(f\circ g)(x) = Df(g(x))\cdot Dg(x)
+\end{align*}
+
+... neural networks
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Renormalization}
+
+\vsp
+Classical spin chain: $H = \sum_{i=1}^N \sigma_i\sigma_{i+1}$ 
+\begin{align*}
+    Z &= \sum_{\sigma_1...\sigma_N} \exp\Bigl( \sum_{i=1}^N \sigma_i\sigma_{i+1} \Bigr) 
+       = \sum_{\sigma_1...\sigma_N} \prod_{i=1}^N  \exp\bigl( \sigma_i\sigma_{i+1} \bigr) \\
+      &= \sum_{\sigma_1\sigma_3...} \ \prod_{i=2,4...} \Bigl(
+        \sum_{\sigma_i} \exp\bigl( \sigma_i\sigma_{i+1} \bigr) \Bigr) \\
+\end{align*}
+%where is the path integral?
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{sum over paths}
+
+\begin{align*}
+\frac{d}{dt} f(t) = H f(t)
+\end{align*}
+has solution:
+\begin{align*}
+f(t) &= \exp(tH) \\
+  &= \sum_{n} \frac{1}{n!} t^n H^n
+\end{align*}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Convexity}
+\vsp
+
+Consider a convex combination 
+$$ \alpha a + (1-\alpha) b$$ 
+for $a,b\in\R^n.$
+We have:
+\begin{align*}
+    x + \bigl( \alpha a + (1-\alpha) b \bigr) = \alpha (x + a) + (1-\alpha) (x + b)
+\end{align*}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Convexity}
+\vsp
+
+Define:
+$$
+    a+_\alpha b := \alpha a + (1-\alpha) b
+$$
+
+then
+\begin{align*}
+    x + ( a +_\alpha b ) = (x+a) +_\alpha (x+b).
+\end{align*}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Convexity}
+\vsp
+
+Define:
+$$
+    a+_\alpha b := \alpha a + (1-\alpha) b
+$$
+
+then
+\begin{align*}
+    x + ( a +_\alpha b ) = (x+a) +_\alpha (x+b).
+\end{align*}
+
+And more:
+\begin{align*}
+    x +_\alpha ( a +_\beta b ) = (x+_\alpha a) +_\beta (x+_\alpha b).
+\end{align*}
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Conjugation}
+\vsp
+
+Given a group $G$
+with elements $g, h, k$
+define 
+$$g\tr h := g^{-1} h g.$$
+Then we have
+$$
+g \triangleright (h \triangleright k) = (g\triangleright h)\triangleright(g\triangleright k).
+$$
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Yang-Baxter equation}
+\vsp
+
+$$(R\tensor I) (I\tensor R) (R\tensor I) = (I\tensor R) (R\tensor I) (I\tensor R)$$
+%Also the Jacobi identity fits here.
+\vsp
+\centerline{\includegraphics[]{pic-yb.pdf}}
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Yang-Baxter equation}
+\vsp
+$$\sigma_1 \sigma_2 \sigma_1 = \sigma_2 \sigma_1 \sigma_2.$$
+\vsp
+\centerline{\includegraphics[]{pic-braid.pdf}}
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Yang-Baxter equation}
+\vsp
+\centerline{\includegraphics[]{pic-braid-shelf.pdf}}
 
 
 \end{document} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
