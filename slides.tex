@@ -48,6 +48,9 @@
 \def\vsp {\vskip 0.5cm}
 
 \def\ket #1{|#1\rangle}
+\def\bra #1{\langle#1|}
+\def\braket #1#2{\langle#1|#2\rangle}
+
 %\def\point {\vskip 5pt $\to$\ \ }
 %\def\point {\vskip 5pt $\Longrightarrow$\ \ }
 %\def\point {\vskip 5pt $\bigodot$\ \ }
@@ -97,8 +100,38 @@
 
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\heading{Matrix multiplication}
+\heading{Path counting}
 
+\vsp
+\centerline{\includegraphics[]{pic-trellis.pdf}}
+$$
+    |\mbox{paths}| = 2.3.3.2 = 36
+$$
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Path counting}
+
+\vsp
+\centerline{\includegraphics[]{pic-trellis.pdf}}
+\begin{align*}
+\begin{pmatrix}1&1&1\\1&1&1\end{pmatrix}
+\begin{pmatrix}1&1&1\\1&1&1\\1&1&1\end{pmatrix}
+\begin{pmatrix}1&1\\1&1\\1&1\end{pmatrix}
+=\begin{pmatrix}9&9\\9&9\end{pmatrix}
+\end{align*}
+$$
+    \sum_{jk} A_{ij} B_{jk} C_{kl}
+    = \sum_{j} A_{ij} \sum_k B_{jk} C_{kl}
+$$
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Path counting}
+
+\vsp
 \centerline{\includegraphics[]{pic-trellis.pdf}}
 
 Distributivity:
@@ -113,7 +146,7 @@ $$
 \heading{Minimum weight path}
 \centerline{\includegraphics[]{pic-minpath-0.pdf}}
 $$
-    |\mbox{paths}| = 2.3.3.2 = 36
+    \min_{ijk} ( A_{ij} + B_{jk} + C_{kl} )
 $$
 
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -135,11 +168,30 @@ $$
 
 \heading{Minimum weight path}
 \centerline{\includegraphics[]{pic-minpath-4.pdf}}
+$$
+    \min_{ijk} ( A_{ij} + B_{jk} + C_{kl} )
+    = \min_k ( \min_j ( (\min_i A_{ij} ) + B_{jk} ) + C_{kl} )
+$$
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Minimum weight path}
+\centerline{\includegraphics[]{pic-minpath-4.pdf}}
 
 Distributivity:
 $$
     a + \min(b, c) = \min(a+b, a+c)
 $$
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Minimum weight path}
+\centerline{\includegraphics[]{pic-minpath-4.pdf}}
+
+\vsp
+... Bellman equation
+
+... Hamilton-Jacobi equation
 
 
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -184,9 +236,29 @@ Joint probabilities factor as:
 \heading{Linear recurrence relations}
 
 \vsp
+For $n=1,2,...:$
+
+$$
+    a_{n+2} = a_{n+1} + a_n \ \ \mbox{with}\ \  a_1=1, a_2=1.
+$$
+\vsp
+\vsp
+\begin{verbatim}
+def fibonacci(n):
+    if n==1 or n==2:
+        return 1
+    return fibonacci(n-1) + fibonacci(n-2)
+\end{verbatim}
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Linear recurrence relations}
+
+\vsp
 \centerline{\includegraphics[]{pic-fibonacci.pdf}}
 $$
-    a_{n+2} = a_{n+1} + a_n
+    a_{n+2} = a_{n+1} + a_n \ \ \mbox{with}\ \  a_1=1, a_2=1.
 $$
 
 
@@ -248,16 +320,88 @@ Classical spin chain: $H = \sum_{i=1}^N \sigma_i\sigma_{i+1}$
 
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\heading{sum over paths}
+\heading{Sum over paths}
 
 \begin{align*}
-\frac{d}{dt} f(t) = H f(t)
+\frac{d}{dt} \psi(t) = H f(t)
 \end{align*}
 has solution:
 \begin{align*}
-f(t) &= \exp(tH) \\
+\psi(t) &= \exp(tH) \\
   &= \sum_{n} \frac{1}{n!} t^n H^n
 \end{align*}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Sum over paths}
+
+\vsp
+$$
+\exp(H) = 1 + H + \frac{1}{2}H^2 + ... + \frac{1}{n!} H^n + ...
+$$
+\vsp
+\includegraphics[width=0.8\textwidth]{pic-exp.pdf}
+
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Quantum}
+\vsp
+\includegraphics[width=0.8\textwidth]{pic-quantum.pdf}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Quantum}
+\vsp
+\centerline{\includegraphics[width=0.7\textwidth]{pic-quantum.pdf}}
+\vsp
+\begin{align*}
+&p|\braket{u}{0}|^2 + (1-p)|\braket{u}{1}|^2 \\
+=& \bra{u}\Bigl( p\ket{0}\bra{0} + (1-p)\ket{1}\bra{1} \Bigr ) \ket{u}
+\end{align*}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Quantum}
+\vsp
+\centerline{\includegraphics[width=0.5\textwidth]{Bell.png}}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Size}
+\vsp
+\begin{align*}
+    \mu(A\cup B) &= \mu(A) + \mu(B)
+\end{align*}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Size}
+\vsp
+\begin{align*}
+    \mu(A\cup B) &= \mu(A) + \mu(B) - \mu(A\cap B)
+\end{align*}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Size}
+\vsp
+\begin{align*}
+    \mu(A\cup B) &= \mu(A) + \mu(B) - \mu(A\cap B) \\
+    \chi(X\cup Y) &= \chi(X) + \chi(Y) - \chi(X\cap Y) \\
+    H(p, q) &= H(p) + H(q) - I(p:q) \\
+\end{align*}
+
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\heading{Size}
+\vsp
+\begin{align*}
+\mu(A\cup B\cup C) = \ &\mu(A) + \mu(B) + \mu(C)  \\
+                     &- \mu(A\cap B) - \mu(A\cap C) - \mu(B\cap C) \\
+                     &+ \mu(A\cap B \cap C)
+\end{align*}
+
 
 \newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -348,6 +492,9 @@ $$\sigma_1 \sigma_2 \sigma_1 = \sigma_2 \sigma_1 \sigma_2.$$
 \vsp
 \centerline{\includegraphics[]{pic-braid-shelf.pdf}}
 
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\centerline{\includegraphics[]{pic-question.pdf}}
 
 \end{document} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
