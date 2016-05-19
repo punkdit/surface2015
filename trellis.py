@@ -242,18 +242,23 @@ def lines(x, y, lines):
         c.text(x, y, line, center)
         y -= h
 
-c.stroke(path.circle(x, y, 2))
-lines(x, y, "AI:~neural nets~belief propagation~dynamic programming")
+c.stroke(path.circle(2.5, 1.7, 3))
+
+c.fill(path.circle(x, y+0.2, 1.5), [trafo.scale(x=x, y=y, sx=1.4, sy=1), white])
+c.stroke(path.circle(x, y+0.2, 1.5), [trafo.scale(x=x, y=y, sx=1.4, sy=1)])
+lines(x, y, "AI:~dynamic programming~belief propagation~neural nets")
 
 x, y = 5, 2
-c.stroke(path.circle(x, y, 1.5))
+c.fill(path.circle(x, y+0.2, 1.5), [white])
+c.stroke(path.circle(x, y+0.2, 1.5))
 lines(x, y, "computation~process~efficiency~physicality")
 
 x, y = 0, 0
-c.stroke(path.circle(x, y, 1.5))
-lines(x, y, "reductionism~homomorphism~representation~models")
+c.fill(path.circle(x, y+0.2, 1.5), [white])
+c.stroke(path.circle(x, y+0.2, 1.5))
+lines(x, y, "reductionism~homomorphism~representation~semantics~models")
 
-c.text(2.5, 1.5, "?", [trafo.scale(5, 5)]+center)
+c.text(2.5, 1.7, "?", [trafo.scale(5, 5)]+center)
 
 c.writePDFfile("pic-question.pdf")
 
