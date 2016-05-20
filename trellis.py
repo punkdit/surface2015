@@ -32,6 +32,8 @@ text.set(docopt="10pt")
 text.preamble(r'\usepackage{amsmath,amsfonts,amssymb}')
 #text.preamble(r"\def\I{\mathbb{I}}")
 text.preamble(r"\def\ket #1{|#1\rangle}")
+text.preamble(r"\def\bra #1{\langle#1|}")
+text.preamble(r"\def\braket #1#2{\langle#1|#2\rangle}")
 
 
 rgb = color.rgb
@@ -228,6 +230,39 @@ def timeslice(x, y, transparency=0., label="", W=3):
         c.text(W+0.2, 0., label, west+[trafo.translate(x, y)])
 
 
+c = canvas.canvas()
+
+x, y = 0., 4.
+
+def lines(x, y, lines):
+    lines = lines.split('~')
+    h = 0.4
+    y += 0.5*h*len(lines)
+    for line in lines:
+        c.text(x, y, line, center)
+        y -= h
+
+c.stroke(path.circle(2.5, 1.7, 3))
+
+c.fill(path.circle(x, y+0.2, 1.5), [trafo.scale(x=x, y=y, sx=1.4, sy=1), white])
+c.stroke(path.circle(x, y+0.2, 1.5), [trafo.scale(x=x, y=y, sx=1.4, sy=1)])
+lines(x, y, "AI:~dynamic programming~belief propagation~neural nets")
+
+x, y = 5, 2
+c.fill(path.circle(x, y+0.2, 1.5), [white])
+c.stroke(path.circle(x, y+0.2, 1.5))
+lines(x, y, "computation~process~efficiency~physicality")
+
+x, y = 0, 0
+c.fill(path.circle(x, y+0.2, 1.5), [white])
+c.stroke(path.circle(x, y+0.2, 1.5))
+lines(x, y, "reductionism~homomorphism~representation~semantics~models")
+
+c.text(2.5, 1.7, "?", [trafo.scale(5, 5)]+center)
+
+c.writePDFfile("pic-question.pdf")
+
+sys.exit(0)
 
 #############################################################################
 #
@@ -236,8 +271,8 @@ def timeslice(x, y, transparency=0., label="", W=3):
 
 c = canvas.canvas()
 
-w = 2.0
-h = 2.0
+w = 1.5
+h = 1.2
 
 ns = [2, 3, 3, 2]
 
@@ -426,7 +461,6 @@ c = canvas.canvas()
 w, h = 2., 0.7
 
 def arrow(x0, y0, x1, y1):
-
     x00, y00 = conv(0.1, (x0, y0), (x1, y1))
     x11, y11 = conv(0.85, (x0, y0), (x1, y1))
     c.stroke(path.line(x00, y00, x11, y11), [deco.earrow()])
@@ -474,4 +508,73 @@ node(2*w, 1*h, r"$\times$")
 
 
 c.writePDFfile("pic-diff.pdf")
+
+#############################################################################
+#
+#
+
+def arrow(x0, y0, x1, y1, a=0.1, b=0.9):
+    x00, y00 = conv(a, (x0, y0), (x1, y1))
+    x11, y11 = conv(b, (x0, y0), (x1, y1))
+    c.stroke(path.line(x00, y00, x11, y11), [deco.earrow()])
+
+c = canvas.canvas()
+
+
+w = 1.
+h = 0.5
+
+n = 4
+
+c.text(-1.2, 0.5*(n-1)*h, r"$\frac{1}{3!} H^3 = \frac{1}{3!} \sum $", center)
+
+
+for i in range(n):
+  for j in range(4):
+    c.fill(path.circle(i*w, j*h, 0.05))
+
+for i in range(n-1):
+    c.text(i*w+0.5*w, -0.5, "$H$", center)
+
+
+arrow(0*w, 3*h, 1*w, 1*h)
+arrow(1*w, 1*h, 2*w, 3*h)
+arrow(2*w, 3*h, 3*w, 0*h)
+
+c.writePDFfile("pic-exp.pdf")
+
+#############################################################################
+#
+#
+
+c = canvas.canvas()
+
+
+w = 2.
+h = 1.
+H = 1.8*h
+
+c.text(0.5*w, H, r"\underline{prepare}", center)
+
+arrow(0, 0.5*h, 1*w, 1*h)
+arrow(0, 0.5*h, 1*w, 0*h)
+
+c.text(0.5*w, 1.0*h, r"$p$", center)
+c.text(0.5*w, 0.0*h, r"$1-p$", center)
+
+c.text(1*w, 1*h, r"$\ket{0}$", center)
+c.text(1*w, 0*h, r"$\ket{1}$", center)
+
+
+arrow(1*w, 1*h, 2*w, 1*h, 0.2)
+arrow(1*w, 0*h, 2*w, 0*h, 0.2)
+
+c.text(2.5*w, H, r"\underline{measure}", center)
+
+c.text(2.5*w, 1*h, r"$p|\braket{u}{0}|^2$", center)
+c.text(2.5*w, 0*h, r"$(1-p)|\braket{u}{1}|^2$", center)
+
+
+c.writePDFfile("pic-quantum.pdf")
+
 
