@@ -1,0 +1,12 @@
+
+19/2/17
+=======
+
+Monads, distributivity, Yang-Baxter:
+https://golem.ph.utexas.edu/category/2017/02/distributive_laws.html
+https://arxiv.org/abs/0710.1120
+http://math.ucr.edu/home/baez/week257.html
+
+
+
+
