@@ -1,13 +1,111 @@
+%\documentclass[12pt,notitlepage,aps,pra,longbibliography,nofootinbib,tightenlines]{revtex4}
+%\documentclass[12pt,notitlepage,longbibliography,nofootinbib,tightenlines]{revtex4-1}
+%\documentclass[12pt,notitlepage,longbibliography,nofootinbib,tightenlines]{revtex4-1}
+
+%\documentclass[12pt,a4]{revtex4}
+\documentclass[11pt]{article}
+%\documentclass[11pt, twocolumn]{article}
 
 
-9/2/2017
-========
+% xelatex:
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\usepackage[small,sf,bf]{titlesec}
 
-Theme: 
-Wandering Towards a Goal: How can mindless mathematical laws give rise to aims and intention?
+%\setromanfont{DejaVu Serif}
+%\setromanfont{Droid Serif}
 
-Essay:
-Meaning and Compositionality
+%\setromanfont{Gentium} % nice! a bit fluffy
+\setromanfont{Gentium Book Basic} % more bold
+
+%\setromanfont{Noto Serif} % a bit thick
+%\setromanfont{Utopia}
+
+
+%\usepackage{epsf}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{natbib}
+\usepackage{tikz-cd}
+%\usepackage{cite}
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+%\RequirePackage{algorithmic}
+%\RequirePackage{algorithm}
+%\RequirePackage{theorem}
+%\RequirePackage{eucal}
+\RequirePackage{color}
+\RequirePackage{url}
+\RequirePackage{mdwlist}
+
+\RequirePackage[all]{xy}
+\CompileMatrices
+\RequirePackage{hyperref}
+\RequirePackage{graphicx}
+%\RequirePackage[dvips]{geometry}
+
+
+\makeatletter
+\newcommand{\pushright}[1]{\ifmeasuring@#1\else\omit\hfill$\displaystyle#1$\fi\ignorespaces}
+\newcommand{\pushleft}[1]{\ifmeasuring@#1\else\omit$\displaystyle#1$\hfill\fi\ignorespaces}
+\makeatother
+
+
+\begin{document}
+
+%\title{The surface betrays what lies beneath}
+%\title{Show me the morphism}
+%\title{When the surface betrays what lies beneath}
+%\title{Path-integrals are everywhere}
+%\title{The meaning is in the arrows between objects, not in the objects themselves}
+%\title{Design patterns in message passing}
+%\title{Size, distributivity, homomorphism:\\
+%    when the surface betrays what lies beneath}
+
+%9/2/2017
+%========
+%
+%Theme: 
+%Wandering Towards a Goal: How can mindless mathematical laws give rise to aims and intention?
+
+\title{Meaning and Compositionality}
+
+\author{Simon Burton}
+%\affiliation{Centre for Engineered Quantum Systems, School of Physics, The University of Sydney}
+
+\date{\today}
+
+%\begin{abstract}
+%We make a compendium of many uses of a simple idea.
+%Perhaps it is the only really great calculation.
+%\end{abstract}
+
+\maketitle
+
+
+\def\N{\mathbb N}
+\def\Z{\mathbb Z}
+\def\R{\mathbb R}
+\def\C{\mathbb C}
+\def\Sets{\mathbb B}
+\def\Expect{\mathbb E}
+\def\Ind{\mathbb I}
+\def\Complex{\mathbb{C}}
+\def\GL{\mathrm{GL}}
+\def\half{\frac{1}{2}}
+\def\todo#1{\emph{(XXX #1 XXX)}}
+\def\tensor{\otimes}
+\def\tr{\mbox{tr}}
+\def\det{\mbox{det}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
 
 The physicists answer: energy minimization, the ball ``wants'' to
 go to the bottom of the hill.
@@ -46,5 +144,9 @@ There is no ``one'' having aims and intentions: it only appears to
 be so when the wavefront is presumed.
 
 
+\bibliography{refs}{}
+\bibliographystyle{abbrv}
 
+
+\end{document}
 
